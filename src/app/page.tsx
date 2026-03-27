@@ -32,7 +32,7 @@ export default function HomePage() {
               <span className="text-blue-600">Re</span>frame.ai
             </h1>
             <p className="text-xl text-slate-500 mb-8 font-light">
-              AI Sycophancy Transparency for Clinicians
+              Helping clinicians see what AI-assisted diagnosis might be missing
             </p>
             <a
               href="#scenarios"
@@ -49,27 +49,29 @@ export default function HomePage() {
                 The Problem
               </p>
               <h2 className="text-2xl font-bold text-slate-900 mb-4">
-                AI agrees with doctors, even when it shouldn&apos;t.
+                AI assistants tend to agree with clinicians, even when the evidence does not support it.
               </h2>
               <p className="text-slate-600 leading-relaxed mb-6">
-                Every major LLM suffers from sycophancy: the tendency to validate a user&apos;s
-                hypothesis rather than challenge it. In most contexts, this is annoying. In
-                clinical settings, it&apos;s dangerous.
+                Every major language model exhibits sycophancy: a tendency to validate the
+                user&apos;s hypothesis rather than challenge it. In most contexts, this is a
+                minor inconvenience. In clinical settings, it presents a genuine patient safety risk.
               </p>
             </div>
             <div className="mx-8 mb-6 border-l-4 border-blue-400 bg-blue-50 px-5 py-4 rounded-r-xl">
               <p className="text-sm text-slate-600 italic leading-relaxed">
                 A doctor asks: &ldquo;Could this ECG be consistent with NSTEMI?&rdquo; A sycophantic
-                AI finds supporting evidence and downplays contradictory signs, because the question
-                anchored the framing. The doctor sees confirmation, not the full clinical picture.
-                The AI said nothing wrong. <strong className="text-slate-800 not-italic">That is the problem.</strong>
+                AI surfaces supporting evidence and quietly downplays contradictory signs, because the
+                question itself has anchored the framing. The doctor receives confirmation rather than
+                a complete clinical picture.
+                The AI has said nothing factually wrong. <strong className="text-slate-800 not-italic">That is precisely the problem.</strong>
               </p>
             </div>
             <div className="px-8 pb-8">
               <p className="text-slate-600 leading-relaxed">
-                Anchoring bias is the leading cause of diagnostic error. A sycophantic AI silently
-                amplifies exactly that. Unlike hallucination, sycophancy produces no detectable
-                error — only plausible agreement. No existing product addresses this.
+                Anchoring bias is the leading cause of diagnostic error, and a sycophantic AI
+                amplifies it silently. Unlike hallucination, sycophancy produces no detectable
+                error. It produces only plausible, confident agreement. No existing clinical
+                product addresses this.
               </p>
             </div>
           </div>
@@ -80,13 +82,13 @@ export default function HomePage() {
               The Product
             </p>
             <h2 className="text-2xl font-bold text-slate-900 mb-2">
-              Five agents. No echo chamber.
+              Five agents working without an echo chamber.
             </h2>
             <p className="text-slate-500 mb-8 leading-relaxed">
               Reframe.ai is a Claude-powered clinical assistant built around a multi-agent
-              debate architecture. Rather than a single AI validating the doctor&apos;s framing,
-              five agents work in parallel — arguing, challenging, and adjudicating to surface
-              the most complete clinical picture.
+              debate architecture. Rather than a single AI validating the clinician&apos;s framing,
+              five specialised agents work in parallel: arguing, challenging, and adjudicating
+              to surface the most complete clinical picture available from the evidence.
             </p>
 
             <div className="space-y-3">
@@ -167,11 +169,12 @@ export default function HomePage() {
               Sycophancy Scoring
             </p>
             <h2 className="text-2xl font-bold text-slate-900 mb-2">
-              Real-time flags, not alarms.
+              Real-time flags designed to prompt reflection, not interrupt workflow.
             </h2>
             <p className="text-slate-500 mb-8 leading-relaxed">
-              The monitor scores every AI response across five signals and triggers contextual
-              UI flags — designed to prompt reflection without interrupting workflow.
+              The Sycophancy Monitor scores every AI response across five signals and triggers
+              contextual flags in the interface. The goal is to invite reconsideration at the
+              right moment, without adding friction to the clinical consultation.
             </p>
 
             <div className="grid grid-cols-3 gap-4 mb-6">
@@ -220,7 +223,7 @@ export default function HomePage() {
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
                     <div>
                       <span className="text-xs font-semibold text-slate-700">{signal.label} </span>
-                      <span className="text-xs text-slate-400">— {signal.desc}</span>
+                      <span className="text-xs text-slate-400">: {signal.desc}</span>
                     </div>
                   </div>
                 ))}
@@ -234,12 +237,13 @@ export default function HomePage() {
               Live Demo
             </p>
             <h2 className="text-2xl font-bold text-slate-900 mb-2">
-              Three scenarios, three failure modes.
+              Three scenarios, each demonstrating a distinct failure mode.
             </h2>
             <p className="text-slate-500 mb-8 leading-relaxed">
-              Each scenario demonstrates a different sycophancy failure. Watch the score rise
-              as the doctor&apos;s framing contaminates the AI, then trigger Agent Debate to see
-              the blind Judge rule on evidence alone.
+              Each scenario walks through a realistic clinical consultation in which sycophancy
+              develops as the clinician anchors on a working diagnosis. Watch the score change
+              as the AI adopts the doctor&apos;s framing, then trigger the Agent Debate to see
+              the blind Judge assess the evidence independently.
             </p>
             <div className="grid grid-cols-3 gap-4">
               {scenarios.map((scenario) => (
@@ -254,29 +258,29 @@ export default function HomePage() {
               Why This Wins
             </p>
             <h2 className="text-2xl font-bold text-slate-900 mb-8">
-              The unfair advantages.
+              What sets Reframe.ai apart.
             </h2>
             <div className="grid grid-cols-2 gap-4">
               {[
                 {
                   Icon: Building2,
-                  title: "Real Clinical Need",
-                  desc: "Anchoring bias is the #1 cause of diagnostic error. Reframe.ai solves a documented patient safety problem, not a theoretical one.",
+                  title: "A Documented Clinical Problem",
+                  desc: "Anchoring bias is the leading cause of diagnostic error. Reframe.ai addresses a well-evidenced patient safety issue, not a speculative one.",
                 },
                 {
                   Icon: Bot,
-                  title: "Deep Claude Usage",
-                  desc: "Five coordinated Claude agents: assistant, two debaters, blind judge, and monitor. A genuine multi-agent architecture, live and running.",
+                  title: "Genuine Multi-Agent Architecture",
+                  desc: "Five coordinated Claude agents work in parallel: a clinical assistant, two debating agents, a blind judge, and a sycophancy monitor. This is a live, working system.",
                 },
                 {
                   Icon: TrendingUp,
-                  title: "Market Gap",
-                  desc: "No product offers real-time, clinician-facing sycophancy detection. Existing tools target developers, not point-of-care users.",
+                  title: "An Unaddressed Market Gap",
+                  desc: "No existing product offers real-time sycophancy detection at the point of care. Current tools are built for developers, not practising clinicians.",
                 },
                 {
                   Icon: Stethoscope,
-                  title: "Domain Moat",
-                  desc: "Built by a practising doctor. The clinical intuition behind the demo scenarios cannot be faked by a software engineer.",
+                  title: "Built by a Practising Doctor",
+                  desc: "The clinical scenarios and failure modes in this demo reflect real diagnostic reasoning. That level of domain specificity is difficult to replicate without medical training.",
                 },
               ].map((item) => (
                 <div key={item.title} className="bg-white border border-slate-200 rounded-xl p-5">
@@ -294,7 +298,7 @@ export default function HomePage() {
       </main>
 
       <footer className="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-400 mt-16">
-        <span className="font-semibold text-slate-600">Reframe.ai</span> — Claude X LSE Hackathon 2026.
+        <span className="font-semibold text-slate-600">Reframe.ai</span> · Claude X LSE Hackathon 2026.
         This is a demonstration prototype. Not for clinical use.
       </footer>
     </div>
