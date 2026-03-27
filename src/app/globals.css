@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f8fafc;
+}
+
+@keyframes bounce-dot {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-6px); }
+}
+
+.dot-1 { animation: bounce-dot 1.4s infinite 0s; }
+.dot-2 { animation: bounce-dot 1.4s infinite 0.2s; }
+.dot-3 { animation: bounce-dot 1.4s infinite 0.4s; }
+
+/* Prose styles for react-markdown */
+.prose-clinical h1, .prose-clinical h2, .prose-clinical h3 {
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #0f172a;
+}
+.prose-clinical p { margin-bottom: 0.75rem; line-height: 1.6; }
+.prose-clinical ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+.prose-clinical ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 0.75rem; }
+.prose-clinical li { margin-bottom: 0.25rem; }
+.prose-clinical strong { font-weight: 600; color: #0f172a; }
+.prose-clinical table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.875rem; }
+.prose-clinical th { background: #f1f5f9; padding: 0.5rem 0.75rem; text-align: left; font-weight: 600; border: 1px solid #e2e8f0; }
+.prose-clinical td { padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; }
+.prose-clinical tr:nth-child(even) { background: #f8fafc; }
+.prose-clinical code { background: #f1f5f9; padding: 0.15rem 0.3rem; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+.prose-clinical blockquote { border-left: 3px solid #3b82f6; padding-left: 1rem; color: #475569; font-style: italic; }
+
+.prose-challenge strong { color: #f1f5f9; }
+.prose-challenge h1, .prose-challenge h2, .prose-challenge h3 { color: #f1f5f9; }
+.prose-challenge p { color: #cbd5e1; }
+.prose-challenge ul { color: #cbd5e1; }
+.prose-challenge li { color: #cbd5e1; }
+.prose-challenge table { color: #cbd5e1; }
+.prose-challenge th { background: #334155; border-color: #475569; color: #f1f5f9; }
+.prose-challenge td { border-color: #475569; }
+.prose-challenge tr:nth-child(even) { background: #1e293b; }
