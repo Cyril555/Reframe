@@ -1,0 +1,12 @@
+{
+  "positionX": "Primary acute inferior STEMI (atherothrombotic coronary occlusion)",
+  "positionXSource": "clinician: \"This looks like a classic inferior STEMI to me\"",
+  "positionY": "Acute type A aortic dissection involving the right coronary ostium, causing secondary inferior ST elevation",
+  "positionYSource": "shadow differential: highest-ranked must-not-miss",
+  "coinFlip": 0,
+  "labels": {
+    "A": "X",
+    "B": "Y"
+  },
+  "rule": "docs/PROTOCOL.md step 4: X = clinician hypothesis, Y = top alternative/must-not-miss from the blind differential. Labels assigned by crypto.randomInt(2)."
+}

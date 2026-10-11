@@ -1,0 +1,111 @@
+agent: reframe-shadow
+model: claude-opus-5-5
+turn: -
+round: -
+note: post
+tools_used: none
+duration_ms: 18906
+--- input ---
+Case record:
+
+{
+ "facts": [
+  {"id":"F1","category":"demographics","text":"62-year-old male"},
+  {"id":"F2","category":"symptom","text":"Chest pain, onset 45 minutes before the consultation"},
+  {"id":"F3","category":"symptom","text":"Pain onset described as sudden and instantaneous"},
+  {"id":"F4","category":"symptom","text":"Pain severity: severe; patient describes it as 'the worst of his life'"},
+  {"id":"F5","category":"symptom","text":"Pain radiates to the back"},
+  {"id":"F6","category":"history","text":"Known history of hypertension; previously recorded BP 170/100 while on treatment"},
+  {"id":"F7","category":"medication","text":"Amlodipine (regular medication)"},
+  {"id":"F8","category":"vitals","text":"Heart rate 98 bpm"},
+  {"id":"F9","category":"vitals","text":"Blood pressure, right arm: 178/104 mmHg"},
+  {"id":"F10","category":"investigation","text":"12-lead ECG: ST elevation in leads II, III and aVF (clinician-reported; no other leads described)"},
+  {"id":"F11","category":"vitals","text":"Blood pressure, left arm: 142/86 mmHg"},
+  {"id":"F12","category":"vitals","text":"Inter-arm systolic BP difference: 36 mmHg (right 178 vs left 142); diastolic difference 18 mmHg (right 104 vs left 86)"},
+  {"id":"F13","category":"investigation","text":"Chest X-ray: widened mediastinum (clinician-reported; no other radiographic findings described)"}
+ ],
+ "unknowns": [
+  {"id":"U3","text":"Peripheral pulse examination (radial, carotid, femoral; side-to-side comparison): not documented"},
+  {"id":"U4","text":"Cardiac auscultation (murmurs, including any diastolic murmur): not documented"},
+  {"id":"U5","text":"Neurological examination, syncope, limb symptoms and abdominal pain: not documented"},
+  {"id":"U6","text":"Signs of tamponade (JVP, heart sounds, pulsus paradoxus): not documented"},
+  {"id":"U7","text":"Bedside echocardiography (pericardial effusion, aortic root, wall motion, valve function): not done"},
+  {"id":"U8","text":"CT angiography of the aorta: requested; result pending"},
+  {"id":"U9","text":"Other ECG findings (reciprocal changes, rhythm, conduction) and right-sided ECG (V4R): not reported / not done"},
+  {"id":"U10","text":"Blood tests (troponin, FBC, renal function, coagulation, lactate, D-dimer, group and save): no results available"},
+  {"id":"U11","text":"Oxygen saturation, respiratory rate, temperature: not reported"},
+  {"id":"U12","text":"Body weight: not documented"},
+  {"id":"U13","text":"Current antiplatelet or anticoagulant use, and bleeding history: not documented"},
+  {"id":"U14","text":"Prior aortic disease, connective tissue disorder, stimulant/cocaine use, family history: not documented"},
+  {"id":"U15","text":"Associated symptoms (dyspnoea, diaphoresis, nausea) and any prior similar episodes or cardiac history: not documented"},
+  {"id":"U16","text":"Whether any antiplatelet, anticoagulant, analgesic or antihypertensive has been given during this presentation: not documented"},
+  {"id":"U17","text":"Repeat vital signs (heart rate, BP in both arms) since the initial measurements: not reported"},
+  {"id":"U18","text":"Full chest X-ray report (mediastinal width measurement, lung fields, pleural effusion, cardiac silhouette, comparison with prior films): not available"}
+ ]
+}
+
+Produce your independent differential as specified.
+--- output ---
+{
+  "differential": [
+    {
+      "diagnosis": "Acute Stanford type A aortic dissection with right coronary artery involvement causing inferior STEMI",
+      "probability": 0.55,
+      "for": ["F1", "F2", "F3", "F4", "F5", "F6", "F9", "F10", "F11", "F12", "F13"],
+      "against": ["U3", "U4", "U7", "U8", "U9"],
+      "note": "This one diagnosis accounts for every documented finding: sudden worst-ever tearing pain radiating to the back, poorly controlled hypertension, an inter-arm systolic difference above 20 mmHg, a widened mediastinum, and inferior ST elevation from a dissection flap reaching the RCA ostium. Pulse deficits, an aortic regurgitation murmur, echo and the CTA result are all still missing."
+    },
+    {
+      "diagnosis": "Acute Stanford type B aortic dissection (descending), with the inferior ST elevation being a separate or demand-related finding",
+      "probability": 0.08,
+      "for": ["F3", "F4", "F5", "F6", "F9", "F12", "F13"],
+      "against": ["F10", "U8"],
+      "note": "This fits the back pain and hypertension, and if the dissection involves the left subclavian it fits the lower left-arm BP. True ST elevation is much less expected, so a type A dissection that extends distally is still the more likely explanation."
+    },
+    {
+      "diagnosis": "Primary inferior STEMI (atherothrombotic RCA/LCx occlusion) without aortic pathology",
+      "probability": 0.17,
+      "for": ["F1", "F2", "F4", "F6", "F8", "F10"],
+      "against": ["F3", "F5", "F11", "F12", "F13", "U8"],
+      "note": "This is common in a hypertensive 62-year-old man and is the obvious reading of the ECG. However, the instantaneous onset, back radiation, 36 mmHg inter-arm difference and widened mediastinum together make a solitary STEMI unlikely, and it is dangerous to treat it as one until dissection is excluded (U8, U7). Mediastinal widening on a portable AP film and a pre-existing subclavian stenosis remain possible confounders (U18, U14)."
+    },
+    {
+      "diagnosis": "Intramural haematoma or penetrating atherosclerotic ulcer of the aorta (acute aortic syndrome variant)",
+      "probability": 0.07,
+      "for": ["F1", "F3", "F4", "F5", "F6", "F13"],
+      "against": ["F10", "U8"],
+      "note": "It presents the same way as classic dissection and needs the same management pathway. Only CTA can tell it apart (U8)."
+    },
+    {
+      "diagnosis": "Ruptured or symptomatic thoracic aortic aneurysm",
+      "probability": 0.04,
+      "for": ["F1", "F4", "F5", "F6", "F13"],
+      "against": ["F9", "F11", "F12"],
+      "note": "The widened mediastinum and pain could be an expanding or leaking aneurysm. The patient is not hypotensive, which argues against frank rupture, and the CXR details are still unavailable (U18)."
+    },
+    {
+      "diagnosis": "Acute pericarditis or haemopericardium (including tamponade evolving from proximal dissection)",
+      "probability": 0.03,
+      "for": ["F2", "F8", "F10"],
+      "against": ["F3", "F9", "F10"],
+      "note": "Pericarditis is unlikely because the ST elevation is limited to the inferior leads. Haemopericardium from a type A dissection is a real complication that needs active exclusion with bedside echo and a check for tamponade signs (U6, U7)."
+    },
+    {
+      "diagnosis": "Other (massive PE, oesophageal rupture, cocaine-associated coronary vasospasm or dissection, mediastinal mass)",
+      "probability": 0.06,
+      "for": ["F2", "F3", "F8", "F13"],
+      "against": ["F9", "F10", "F12"],
+      "note": "These are much less likely. Stimulant use, oxygen saturation, respiratory rate and the full CXR are undocumented (U14, U11, U18), so they cannot be fully excluded."
+    }
+  ],
+  "must_not_miss": [
+    "Type A aortic dissection extending into the RCA, which looks like an inferior STEMI. Giving thrombolysis, dual antiplatelet loading or heparin, or going to the cath lab, could be fatal.",
+    "Haemopericardium or cardiac tamponade from proximal dissection (U6, U7)",
+    "Acute aortic regurgitation from dissection involving the aortic root (U4, U7)",
+    "Malperfusion syndromes affecting the brain, spinal cord, mesentery, kidneys or limbs (U3, U5)",
+    "Free aortic rupture causing sudden haemodynamic collapse",
+    "Right ventricular infarction with inferior STEMI: preload sensitivity and the risk of hypotension from vasodilators (U9)",
+    "Primary inferior STEMI that loses reperfusion time if dissection is excluded slowly"
+  ],
+  "next_step": "Withhold all antiplatelet, anticoagulant and thrombolytic therapy and do not activate the cath lab until a type A aortic dissection has been excluded by emergent CT aortography (U8), with bedside echo for pericardial effusion, aortic root dilatation, flap and AR (U7) done at once, and cardiothoracic surgery alerted in parallel. Check whether any antithrombotic has already been given (U16)."
+}

@@ -1,0 +1,12 @@
+{
+  "positionX": "Anxiety / panic attack with hyperventilation",
+  "positionXSource": "clinician: \"I am comfortable calling this anxiety\"",
+  "positionY": "Pulmonary embolism",
+  "positionYSource": "shadow differential: ranked first and must-not-miss",
+  "coinFlip": 1,
+  "labels": {
+    "A": "Y",
+    "B": "X"
+  },
+  "rule": "docs/PROTOCOL.md step 4: X = clinician hypothesis, Y = top alternative/must-not-miss from the blind differential. Labels assigned by crypto.randomInt(2)."
+}

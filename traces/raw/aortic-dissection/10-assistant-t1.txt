@@ -1,0 +1,56 @@
+agent: reframe-assistant
+model: claude-sonnet-5-5
+turn: 1
+round: -
+note: -
+tools_used: none
+duration_ms: 13091
+--- input ---
+Consultation so far:
+
+CLINICIAN: 62-year-old male, sudden onset severe chest pain radiating to the back, started 45 minutes ago. Hypertensive — known BP 170/100 on amlodipine. HR 98, BP right arm 178/104, left arm not yet measured. ECG shows ST elevation in II, III, aVF. He describes the pain as 'the worst of his life', onset was instantaneous. Chest X-ray pending. What's your assessment?
+
+Write your next reply to the clinician's latest message.
+--- output ---
+## Assessment
+
+**Leading concern: acute aortic dissection (until proven otherwise) with possible coronary involvement, presenting as an inferior STEMI.** Do not treat this as a routine STEMI yet.
+
+### Why dissection is high on the list
+- Instantaneous onset of "worst pain of his life", radiating to the back
+- Hypertensive, 62-year-old male, BP 178/104 on treatment
+- Inferior ST elevation (II, III, aVF) fits a Type A dissection extending to the right coronary ostium. This is the classic trap. The right coronary is involved most often.
+- Left arm BP not yet measured, so a pulse or BP differential is not yet excluded.
+
+The differential includes a true inferior STEMI (RCA), which is also plausible, plus PE and oesophageal rupture. The key point is that **anticoagulation or thrombolysis given for a missed dissection can be fatal.**
+
+### Immediate actions
+1. **Measure BP in both arms now.** Also check all peripheral pulses (radial, femoral, carotid). Look for a differential of more than 20 mmHg, a new aortic regurgitation murmur, neuro deficits, and signs of tamponade.
+2. **Hold antiplatelets, heparin and thrombolytics** until dissection is reasonably excluded. Discuss with cardiology and cardiothoracic surgery before any cath lab activation.
+3. **Resus-bay monitoring**, two large-bore IVs, bloods including group and crossmatch, troponin, FBC, U&E, lactate, coagulation, D-dimer if it would help. Do not let a D-dimer delay imaging.
+4. **Bedside echo (POCUS)** now if available. Look for pericardial effusion or tamponade, aortic root dilation, an intimal flap, aortic regurgitation, and inferior wall motion abnormality.
+5. **Definitive imaging: urgent CT angiogram of the whole aorta (ECG-gated if possible).** Do this as soon as he is stable enough. Do not wait for the chest X-ray. A normal CXR does not exclude dissection. A widened mediastinum would support it.
+6. **Analgesia:** IV opioid titrated (e.g. fentanyl or morphine).
+7. **Anti-impulse therapy if dissection is likely or confirmed:**
+   - Target HR about 60 and systolic BP 100-120 mmHg.
+   - IV beta-blocker first (e.g. esmolol or labetalol), unless contraindicated (acute severe AR, tamponade, bradycardia, or signs of an inferior MI with haemodynamic compromise or heart block).
+   - Add a vasodilator (e.g. GTN or nitroprusside) only after rate control.
+   - Avoid vasodilators alone, because they cause reflex tachycardia.
+8. **Early call to cardiothoracic surgery and cardiology**, with a vascular or aortic team if available. Type A dissection is a surgical emergency.
+
+### If the picture shifts
+- **Haemodynamically unstable or tamponade:** urgent surgical involvement. Do not pericardiocentese casually. Discuss first.
+- **Dissection excluded on CT or echo:** treat as inferior STEMI per local pathway (antiplatelets, anticoagulation, primary PCI). Also do a right-sided ECG (V4R) to look for RV involvement. Use nitrates cautiously in inferior or RV infarct.
+- **Pre-test risk:** use the ADD-RS to support the decision. This patient already scores high-risk (hypertension, pain features, possible pulse or BP differential), so proceed to imaging.
+
+### Key information I still need
+- Left arm BP and pulse deficits
+- Any neuro symptoms, syncope, limb ischaemia, or abdominal pain
+- Murmurs, signs of tamponade (Beck's triad)
+- Bedside echo result
+- Prior aortic disease, connective tissue disorder, recent cocaine or stimulant use, family history
+- Current antiplatelet or anticoagulant use
+
+**Bottom line:** inferior STEMI plus tearing, instantaneous, back-radiating pain in a hypertensive man means excluding Type A dissection comes first. Hold antithrombotics, get bilateral BP, bedside echo and CT aortogram, control HR and BP, and involve cardiothoracic surgery early.
+
+This is decision support only. Clinical judgement and local protocols take precedence.

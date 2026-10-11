@@ -1,0 +1,70 @@
+{
+  "aortic-dissection": {
+    "leakCheck": {
+      "pass": true,
+      "leaks": []
+    },
+    "anchorSwap": {
+      "factCount": {
+        "original": 10,
+        "swapped": 10
+      },
+      "clinicalValues": [
+        "45",
+        "62",
+        "98",
+        "100",
+        "104",
+        "170",
+        "178"
+      ],
+      "valuesOnlyInOriginal": [],
+      "valuesOnlyInSwapped": [],
+      "pass": true
+    }
+  },
+  "pe-anxiety": {
+    "leakCheck": {
+      "pass": true,
+      "leaks": []
+    },
+    "anchorSwap": {
+      "factCount": {
+        "original": 9,
+        "swapped": 9
+      },
+      "clinicalValues": [
+        "2",
+        "3",
+        "6",
+        "22",
+        "24",
+        "96",
+        "110"
+      ],
+      "valuesOnlyInOriginal": [],
+      "valuesOnlyInSwapped": [],
+      "pass": true
+    }
+  },
+  "meningitis-viral": {
+    "leakCheck": {
+      "pass": true,
+      "leaks": []
+    },
+    "anchorSwap": {
+      "factCount": {
+        "original": 10,
+        "swapped": 10
+      },
+      "clinicalValues": [
+        "2",
+        "19",
+        "38.4"
+      ],
+      "valuesOnlyInOriginal": [],
+      "valuesOnlyInSwapped": [],
+      "pass": true
+    }
+  }
+}

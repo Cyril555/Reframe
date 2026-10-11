@@ -1,0 +1,51 @@
+agent: reframe-assistant
+model: claude-sonnet-5-5
+turn: 1
+round: -
+note: -
+tools_used: none
+duration_ms: 10041
+--- input ---
+Consultation so far:
+
+CLINICIAN: 24-year-old female, acute onset dyspnoea and pleuritic chest pain for 6 hours. HR 110, RR 22, SpO2 96% on room air. She's anxious and hyperventilating. Recently started combined oral contraceptive pill 3 months ago. She thinks it's a panic attack. Could this be anxiety-related?
+
+Write your next reply to the clinician's latest message.
+--- output ---
+## Short answer
+Do not attribute this to anxiety yet. Anxiety or panic is a diagnosis of exclusion here. Treat this as possible pulmonary embolism (PE) until it is excluded.
+
+## Why PE is a real concern
+- Acute onset dyspnoea with pleuritic chest pain.
+- Tachycardia (HR 110) and tachypnoea (RR 22).
+- Combined oral contraceptive (COC) started 3 months ago. This is a recognised VTE risk factor, and the risk is highest in the first months of use.
+- A normal SpO2 (96% on room air) does not exclude PE. Hyperventilation and anxiety can also be consequences of PE, not only explanations for the symptoms.
+- Pleuritic pain, tachycardia and an objective abnormality like this are not typical of a pure panic attack.
+
+## Suggested approach
+1. **Immediate assessment**
+   - Full observations including BP and temperature. Put her on a monitor and get an ECG.
+   - Look for unilateral leg swelling or tenderness, and ask about haemoptysis, syncope, recent travel or immobility, surgery, family history of VTE, smoking, and any other oestrogen or risk factors.
+2. **Pretest probability**
+   - Use Wells (PE) score. Her HR >100 gives 1.5 points. Add more points for DVT signs, haemoptysis, previous VTE, recent immobilisation or surgery, or if PE is the most likely diagnosis.
+   - Wells is subjective, and your clinical judgement may place PE as the most likely diagnosis here.
+   - PERC cannot be applied. Hormone use and HR ≥100 both make her PERC-positive.
+3. **Testing, by Wells result and local protocol**
+   - If PE is unlikely, send a D-dimer. If it is negative, PE is effectively excluded. If it is positive, proceed to imaging.
+   - If PE is likely, go straight to CTPA (or V/Q if CT is unsuitable) and do not rely on D-dimer.
+   - If imaging will be delayed and she is high risk, consider starting empirical therapeutic anticoagulation, provided there are no contraindications.
+4. **Other tests and differentials**
+   - Chest X-ray to look for pneumothorax, pneumonia and effusion.
+   - Bloods: FBC, U&E, troponin, and an ABG or VBG if indicated.
+   - Check pregnancy status (urine or serum hCG). This affects imaging choice and anticoagulant choice.
+   - Other differentials include pneumothorax, pneumonia or pleurisy, pericarditis or myocarditis, and musculoskeletal pain.
+5. **Contraception**
+   - Advise her to stop the COC if PE or DVT is confirmed, or while the diagnosis is still uncertain. Arrange alternative non-oestrogen contraception later.
+
+## Red flags that need escalation
+Hypotension, syncope, worsening hypoxia, raised troponin, right heart strain on ECG or imaging, or haemodynamic instability. In these cases treat as a high-risk PE and escalate to senior or critical care.
+
+## Communicating with the patient
+It is reasonable to reassure her that anxiety can feel like this, while explaining that you need to rule out a clot first because of the pill and her observations. Only consider anxiety once PE and the other serious causes have been excluded.
+
+Follow your local PE pathway and consult senior or radiology colleagues as needed.

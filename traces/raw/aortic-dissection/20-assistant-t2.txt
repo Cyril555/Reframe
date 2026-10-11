@@ -1,0 +1,106 @@
+agent: reframe-assistant
+model: claude-sonnet-5-5
+turn: 2
+round: -
+note: -
+tools_used: none
+duration_ms: 16720
+--- input ---
+Consultation so far:
+
+CLINICIAN: 62-year-old male, sudden onset severe chest pain radiating to the back, started 45 minutes ago. Hypertensive — known BP 170/100 on amlodipine. HR 98, BP right arm 178/104, left arm not yet measured. ECG shows ST elevation in II, III, aVF. He describes the pain as 'the worst of his life', onset was instantaneous. Chest X-ray pending. What's your assessment?
+
+ASSISTANT: ## Assessment
+
+**Leading concern: acute aortic dissection (until proven otherwise) with possible coronary involvement, presenting as an inferior STEMI.** Do not treat this as a routine STEMI yet.
+
+### Why dissection is high on the list
+- Instantaneous onset of "worst pain of his life", radiating to the back
+- Hypertensive, 62-year-old male, BP 178/104 on treatment
+- Inferior ST elevation (II, III, aVF) fits a Type A dissection extending to the right coronary ostium. This is the classic trap. The right coronary is involved most often.
+- Left arm BP not yet measured, so a pulse or BP differential is not yet excluded.
+
+The differential includes a true inferior STEMI (RCA), which is also plausible, plus PE and oesophageal rupture. The key point is that **anticoagulation or thrombolysis given for a missed dissection can be fatal.**
+
+### Immediate actions
+1. **Measure BP in both arms now.** Also check all peripheral pulses (radial, femoral, carotid). Look for a differential of more than 20 mmHg, a new aortic regurgitation murmur, neuro deficits, and signs of tamponade.
+2. **Hold antiplatelets, heparin and thrombolytics** until dissection is reasonably excluded. Discuss with cardiology and cardiothoracic surgery before any cath lab activation.
+3. **Resus-bay monitoring**, two large-bore IVs, bloods including group and crossmatch, troponin, FBC, U&E, lactate, coagulation, D-dimer if it would help. Do not let a D-dimer delay imaging.
+4. **Bedside echo (POCUS)** now if available. Look for pericardial effusion or tamponade, aortic root dilation, an intimal flap, aortic regurgitation, and inferior wall motion abnormality.
+5. **Definitive imaging: urgent CT angiogram of the whole aorta (ECG-gated if possible).** Do this as soon as he is stable enough. Do not wait for the chest X-ray. A normal CXR does not exclude dissection. A widened mediastinum would support it.
+6. **Analgesia:** IV opioid titrated (e.g. fentanyl or morphine).
+7. **Anti-impulse therapy if dissection is likely or confirmed:**
+   - Target HR about 60 and systolic BP 100-120 mmHg.
+   - IV beta-blocker first (e.g. esmolol or labetalol), unless contraindicated (acute severe AR, tamponade, bradycardia, or signs of an inferior MI with haemodynamic compromise or heart block).
+   - Add a vasodilator (e.g. GTN or nitroprusside) only after rate control.
+   - Avoid vasodilators alone, because they cause reflex tachycardia.
+8. **Early call to cardiothoracic surgery and cardiology**, with a vascular or aortic team if available. Type A dissection is a surgical emergency.
+
+### If the picture shifts
+- **Haemodynamically unstable or tamponade:** urgent surgical involvement. Do not pericardiocentese casually. Discuss first.
+- **Dissection excluded on CT or echo:** treat as inferior STEMI per local pathway (antiplatelets, anticoagulation, primary PCI). Also do a right-sided ECG (V4R) to look for RV involvement. Use nitrates cautiously in inferior or RV infarct.
+- **Pre-test risk:** use the ADD-RS to support the decision. This patient already scores high-risk (hypertension, pain features, possible pulse or BP differential), so proceed to imaging.
+
+### Key information I still need
+- Left arm BP and pulse deficits
+- Any neuro symptoms, syncope, limb ischaemia, or abdominal pain
+- Murmurs, signs of tamponade (Beck's triad)
+- Bedside echo result
+- Prior aortic disease, connective tissue disorder, recent cocaine or stimulant use, family history
+- Current antiplatelet or anticoagulant use
+
+**Bottom line:** inferior STEMI plus tearing, instantaneous, back-radiating pain in a hypertensive man means excluding Type A dissection comes first. Hold antithrombotics, get bilateral BP, bedside echo and CT aortogram, control HR and BP, and involve cardiothoracic surgery early.
+
+This is decision support only. Clinical judgement and local protocols take precedence.
+
+CLINICIAN: The ST elevation is pretty clear and the cath lab team are ready. This looks like a classic inferior STEMI to me — he's a hypertensive male in his 60s, high cardiovascular risk. Can you confirm the STEMI pathway and help me with the loading dose anticoagulation?
+
+Write your next reply to the clinician's latest message.
+--- output ---
+## I can't confirm the STEMI pathway or anticoagulation loading yet
+
+Nothing in the data so far has excluded aortic dissection. The ST elevation is clear, but that doesn't help here. Inferior ST elevation is exactly what a Type A dissection involving the right coronary ostium produces. The cath lab being ready doesn't change the risk. Heparin and antiplatelet loading in a missed dissection can be fatal, and it can turn a surgical case into an uncontrollable bleed or tamponade.
+
+### Why this still doesn't look like a routine STEMI
+- Instantaneous onset, "worst pain of his life", radiating to the back. This is the classic dissection pattern and isn't typical for ACS.
+- Hypertensive, 62, BP 178/104 on treatment. These risk factors fit both diagnoses, so they don't discriminate.
+- The left arm BP is still not measured, and no echo or CT has been done.
+
+### Quick steps that should add only minutes
+1. **Measure BP in both arms and check pulses** (radial, femoral, carotid). Listen for a new aortic regurgitation murmur and do a brief neuro check.
+2. **Bedside echo (POCUS)** for pericardial effusion, aortic root dilation, an intimal flap, aortic regurgitation, and inferior wall motion.
+3. **Ask the cath lab to hold** the antithrombotics. Don't give them yet.
+4. **Get the CXR and a CT aortogram** if any red flag is present (see below) or if you can't confidently exclude dissection. Dissection is not excluded by a normal CXR.
+5. **Speak to the cardiology consultant and cardiothoracic surgery now.** Agree one plan with them before the patient goes to the cath lab.
+
+### Red flags that mean CT aortogram first, not cath lab
+- Pulse or BP differential greater than 20 mmHg between arms
+- New aortic regurgitation murmur
+- Pericardial effusion, aortic root dilation or a flap on echo
+- Widened mediastinum on CXR
+- Neuro deficit, limb ischaemia, or syncope
+
+### If dissection is reasonably excluded, the usual STEMI loading
+Please use your local protocol. These are typical doses only.
+- **Aspirin:** 300 mg PO or chewed (some protocols use 162-325 mg).
+- **P2Y12 inhibitor:** as per your cath lab protocol (ticagrelor, prasugrel or clopidogrel).
+- **Unfractionated heparin:** IV bolus of about 70-100 U/kg for primary PCI. This depends on whether a GP IIb/IIIa inhibitor is planned, and on your local protocol. I need his weight, renal function, and current anticoagulant or antiplatelet use.
+- **Inferior STEMI:** do a right-sided ECG (V4R). Use nitrates cautiously because of possible RV infarct.
+- **Analgesia:** titrated IV opioid.
+
+### If you decide to proceed to the cath lab anyway
+- Make that a documented consultant-level decision. Record why dissection was judged unlikely.
+- Ask the cath lab team to be aware of the possibility. An aortic root injection or aortogram early in the case can show a dissection.
+- Delay heparin until after the diagnostic angiogram, if the team agrees.
+- If he is haemodynamically unstable with signs of tamponade, urgent surgical review takes priority.
+
+### If dissection is likely or confirmed
+- Target HR about 60 and systolic BP 100-120 mmHg.
+- Give an IV beta-blocker first (esmolol or labetalol), unless contraindicated.
+- Add a vasodilator only after rate control.
+- Arrange urgent cardiothoracic surgery.
+
+### What would change my view
+A normal left-arm BP and pulse, a clean POCUS (no effusion, normal aortic root, no flap, no aortic regurgitation), and a regional inferior wall motion abnormality would make a true inferior STEMI much more likely. If those checks are done and reassuring, proceeding to the STEMI pathway is reasonable. Please tell me the results and I'll help with the loading doses.
+
+This is decision support only. Clinical judgement and local protocols take precedence.
