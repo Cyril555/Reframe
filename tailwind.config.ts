@@ -13,6 +13,7 @@ const config: Config = {
       colors: {
         paper: "rgb(var(--paper) / <alpha-value>)",
         card: "rgb(var(--card) / <alpha-value>)",
+        panel: "rgb(var(--panel) / <alpha-value>)",
         ink: "rgb(var(--ink) / <alpha-value>)",
         muted: "rgb(var(--muted) / <alpha-value>)",
         line: "rgb(var(--line) / <alpha-value>)",
@@ -29,7 +30,7 @@ const config: Config = {
         red: "rgb(var(--red) / <alpha-value>)",
       },
       fontFamily: {
-        display: ["var(--font-display)", "Georgia", "serif"],
+        display: ["var(--font-sans)", "system-ui", "sans-serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },

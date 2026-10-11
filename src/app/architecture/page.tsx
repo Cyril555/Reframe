@@ -1,6 +1,5 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import { EyeOff, Eye } from "lucide-react";
 import { AgentGraph } from "@/components/AgentGraph";
 import { AGENTS } from "@/lib/agents";
 
@@ -8,39 +7,22 @@ export const metadata = { title: "Architecture · Reframe" };
 
 const ROLES = ["reframe-assistant", "reframe-extractor", "reframe-shadow", "reframe-monitor", "reframe-advocate", "reframe-judge"] as const;
 
-const CANNOT_SEE: Record<(typeof ROLES)[number], string[]> = {
-  "reframe-assistant": [],
-  "reframe-extractor": ["Anything downstream"],
-  "reframe-shadow": ["The conversation", "The doctor's opinion", "The assistant's replies"],
-  "reframe-monitor": ["Earlier turns beyond the previous reply", "Later turns"],
-  "reframe-advocate": ["The conversation", "The doctor's opinion", "The other advocate's opening (in round 1)"],
-  "reframe-judge": ["The conversation", "Which diagnosis the doctor holds", "Which argument came from which side"],
-};
-
 const DECISIONS = [
   {
-    title: "Blindness is enforced by information flow, not by instruction",
-    body: "Telling a model to 'ignore the doctor's opinion' does not remove it from the context. Each Reframe agent is a separate process that starts with an empty context and receives only the message written for it. Its tool access is restricted to a single read-only skill listing, so it cannot open files, browse, or read another agent's output. The judge is blind because the doctor's words never reach it.",
+    title: "Blind by construction",
+    body: "Each agent starts with an empty context and receives only the message written for it. It has no file, web or connector access, so the doctor's opinion cannot reach the blind side.",
   },
   {
-    title: "One agent is allowed to see everything, and its only job is to delete",
-    body: "The Case Extractor is the single bridge between the conversation and the blind side. It outputs numbered facts and a list of what it removed and why: hypothesis, preference, pressure or interpretation. The removed list is recorded for auditing and dropped before anything is passed on.",
+    title: "One agent sees everything, and deletes",
+    body: "The Case Extractor is the only bridge. It turns the conversation into numbered facts and logs every opinion it removes.",
   },
   {
-    title: "A counterfactual, not a heuristic, is the reference for sycophancy",
-    body: "The monitor doesn't score replies against a rubric alone. It compares each reply with what a Shadow Clinician concluded from the same facts with the opinions removed. That turns 'is this sycophantic?' into a concrete comparison: what did the reply drop or adopt that the blind view didn't support?",
-  },
-  {
-    title: "Advocates commit before they see each other",
-    body: "Debate agents tend to converge on whoever argues most confidently, so round 1 runs in parallel and each advocate writes its opening alone. In round 2 each sees the other's opening and may concede points, but it cannot switch sides.",
+    title: "A counterfactual, not a rubric",
+    body: "Each reply is scored against what a shadow clinician concluded from the same facts with no opinions attached.",
   },
   {
     title: "The judge doesn't know who's who",
-    body: "Positions reach the judge as A and B, assigned by a recorded coin flip. The judge then runs a second time with the labels reversed. A verdict that changes with the order is a position bias, not a judgement. All three verdicts held.",
-  },
-  {
-    title: "Every claim cites the record",
-    body: "Advocates must attach fact IDs to every claim, and the judge must check them. In the recorded runs the judges flagged claims that didn't match their citations, including a pain descriptor ('tearing') that appears in no fact. That came from the assistant and was picked up downstream.",
+    body: "Arguments arrive as A and B by coin flip, and the judge rules twice, once with the order reversed.",
   },
 ];
 
@@ -50,102 +32,70 @@ function prompt(role: string) {
 
 export default function Architecture() {
   return (
-    <main className="mx-auto max-w-6xl px-4 sm:px-6 pt-14">
-      <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-monitor">Architecture</p>
-      <h1 className="mt-3 font-display text-5xl sm:text-6xl tracking-tight leading-[1.02] max-w-3xl">Six agents, one barrier.</h1>
-      <p className="mt-5 max-w-2xl text-lg text-muted leading-relaxed">
-        The conversation lives on the left. Everything on the right reasons only from a neutral fact list. The Case Extractor is the
-        only path between them.
-      </p>
-
-      <div className="mt-10 rounded-2xl border border-line bg-card p-4 sm:p-8">
-        <AgentGraph />
-      </div>
-
-      <section className="mt-16">
-        <h2 className="font-display text-3xl tracking-tight">The roles</h2>
-        <p className="mt-2 text-muted max-w-2xl">
-          Each role is a Claude Code subagent defined in <code className="font-mono text-sm text-ink">.claude/agents/</code>. The prompts
-          below are the exact system prompts the recorded agents ran with, extracted from their transcripts.
+    <main>
+      <section className="mx-auto max-w-7xl px-5 sm:px-8 pt-20 sm:pt-28 pb-16">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Architecture</p>
+        <h1 className="mt-6 max-w-4xl text-[clamp(2.5rem,6vw,5rem)] font-medium leading-[0.98] tracking-[-0.04em]">
+          Six agents.
+          <br />
+          <span className="text-ink/30">One barrier between them.</span>
+        </h1>
+        <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted">
+          The conversation stays on the left. Everything on the right reasons only from a neutral list of facts.
         </p>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {ROLES.map((id) => {
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="border border-line p-6 sm:p-12">
+          <div className="mx-auto max-w-3xl">
+            <AgentGraph />
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 sm:px-8 py-24">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">The roles</p>
+        <ul className="mt-8 border-t border-line">
+          {ROLES.map((id, i) => {
             const a = AGENTS[id];
             return (
-              <article key={id} className="rounded-2xl border border-line bg-card p-5 flex flex-col">
-                <div className="flex items-center justify-between gap-2">
-                  <h3 className="flex items-center gap-2 font-medium">
-                    <span className={`h-3 w-3 rounded-full bg-${a.colour}`} />
-                    {a.name}
-                  </h3>
-                  <span className="font-mono text-xs text-muted">{a.model}</span>
-                </div>
-                <p className="mt-2 text-sm leading-relaxed">{a.job}</p>
-                <div className="mt-4 grid gap-2 text-sm">
-                  <div className="flex gap-2">
-                    <Eye size={15} className="mt-0.5 shrink-0 text-muted" />
-                    <span>
+              <li key={id} className="border-b border-line">
+                <details className="group">
+                  <summary className="grid cursor-pointer list-none gap-2 py-6 sm:grid-cols-[3rem,14rem,1fr,auto] sm:items-baseline">
+                    <span className="font-mono text-xs text-muted">0{i + 1}</span>
+                    <span className="text-lg font-medium tracking-tight">{a.name}</span>
+                    <span className="text-[15px] text-muted leading-relaxed">{a.job}</span>
+                    <span className="text-xs text-muted group-open:text-ink">{a.model} · Prompt</span>
+                  </summary>
+                  <div className="pb-8 sm:pl-[17rem] space-y-4">
+                    <p className="text-sm">
                       <span className="text-muted">Sees: </span>
                       {a.sees}
-                    </span>
+                    </p>
+                    <pre className="max-h-80 overflow-auto whitespace-pre-wrap border border-line bg-panel p-4 font-mono text-[11px] leading-relaxed">
+                      {prompt(id)}
+                    </pre>
                   </div>
-                  {CANNOT_SEE[id].length > 0 && (
-                    <div className="flex gap-2">
-                      <EyeOff size={15} className={`mt-0.5 shrink-0 ${a.blind ? "text-judge" : "text-muted"}`} />
-                      <span>
-                        <span className="text-muted">Never sees: </span>
-                        {CANNOT_SEE[id].join(" · ")}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <details className="mt-4 text-sm">
-                  <summary className="cursor-pointer text-muted hover:text-ink">System prompt</summary>
-                  <pre className="mt-2 max-h-80 overflow-auto whitespace-pre-wrap rounded-lg border border-line bg-paper p-3 font-mono text-[11px] leading-relaxed">
-                    {prompt(id)}
-                  </pre>
                 </details>
-              </article>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </section>
 
-      <section className="mt-16">
-        <h2 className="font-display text-3xl tracking-tight">Design decisions</h2>
-        <div className="mt-8 grid gap-x-10 gap-y-8 md:grid-cols-2">
-          {DECISIONS.map((d, i) => (
-            <div key={d.title} className="flex gap-4">
-              <span className="font-display text-3xl text-muted leading-none">{i + 1}</span>
-              <div>
-                <h3 className="font-medium leading-snug">{d.title}</h3>
-                <p className="mt-2 text-sm text-muted leading-relaxed">{d.body}</p>
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-24">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Design decisions</p>
+          <div className="mt-12 grid gap-12 md:grid-cols-2">
+            {DECISIONS.map((d, i) => (
+              <div key={d.title} className="border-l border-ink pl-6">
+                <div className="font-mono text-xs text-muted">0{i + 1}</div>
+                <h3 className="mt-5 text-xl font-medium tracking-tight">{d.title}</h3>
+                <p className="mt-3 max-w-md text-[15px] leading-relaxed text-muted">{d.body}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </section>
-
-      <section className="mt-16">
-        <h2 className="font-display text-3xl tracking-tight">How a run is orchestrated</h2>
-        <ol className="mt-6 space-y-3 max-w-3xl text-sm leading-relaxed">
-          {[
-            ["Consultation", "For each doctor message, the assistant replies with the full conversation in view."],
-            ["Barrier", "The extractor reads the whole conversation, including every pushback, and emits facts. The shadow clinician produces a differential from those facts alone."],
-            ["Monitoring", "Each reply is scored against the blind differential. The monitor sees the previous reply, the doctor's message and the new reply, never later turns."],
-            ["Debate", "On the highest-scoring turn, one advocate takes the doctor's diagnosis and one takes the strongest alternative. Openings run in parallel, then rebuttals."],
-            ["Judgement", "The blind judge rules on the facts and the anonymised arguments, then again with the labels reversed."],
-            ["Checks", "An automated leak scan, an anchor-swap extraction and the order-swap verdict confirm the barrier held. Every input is re-verified with npm run verify."],
-          ].map(([t, b], i) => (
-            <li key={t} className="flex gap-3">
-              <span className="font-mono text-xs text-muted pt-0.5 w-5">{i + 1}.</span>
-              <span>
-                <span className="font-medium">{t}. </span>
-                <span className="text-muted">{b}</span>
-              </span>
-            </li>
-          ))}
-        </ol>
       </section>
     </main>
   );

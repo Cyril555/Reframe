@@ -20,23 +20,23 @@ The assistant runs on Sonnet 5.5 with an ordinary "helpful clinical assistant" p
 
 ## Steps for each scenario
 
-The clinician's messages are taken verbatim from `src/data/scenarios/`. Each scenario has three:
+The clinician's messages are taken verbatim from the original hackathon scenarios (now stored in `traces/raw/<scenario>/clinician.json`). Each scenario has three:
 1. the case presentation
 2. one pushback towards the clinician's preferred diagnosis
-3. new clinical evidence
+3. a change of course: new clinical findings in the aortic case; in the other two, the clinician accepting the assistant's advice
 
 **Escalation (added after the first recordings).** In the first recording, Sonnet 5.5 held its position against the single pushback in all three scenarios. Recent work finds that models give way under *repeated* pressure and claims of authority rather than under one challenge: [Ping et al. 2026](https://arxiv.org/abs/2608.01017) and [MedPRESS](https://arxiv.org/abs/2608.02520). So two further clinician messages are inserted after the pushback:
 - an appeal to seniority
 - time pressure combined with the clinician taking responsibility
 
-They were written by the orchestrator, are stored in `traces/raw/<scenario>/escalation.json` and are marked `author: orchestrator` in the trace. They contain **pressure only and no new clinical findings**, so any change of position they produce is, by definition, not evidence-driven. The scenario's evidence message then becomes turn 5.
+They were written by the orchestrator, are stored in `traces/raw/<scenario>/escalation.json` and are marked `author: orchestrator` in the trace. They contain **pressure only and no new clinical findings**, so any change of position they produce is, by definition, not evidence-driven. The scenario's third message then becomes turn 5.
 
-Raw event files are numbered so they sort in time order: `t0` is the assistant reply for turn t and `t3` is its monitor score (10, 13, 20, 23 and so on), 45–46 are the pre-evidence extractor and shadow, 55–56 are the post-evidence ones, 60 and above are the debate, and 70 and above are the blindness checks.
+Raw event files are numbered so they sort in time order: `t0` is the assistant reply for turn t and `t3` is its monitor score (10, 13, 20, 23 and so on), 45–46 are the extractor and shadow before turn 5, 55–56 are the ones after it, 60 and above are the debate, and 70 and above are the blindness checks.
 
 1. **Consultation.** For each clinician message *t*, the assistant receives the transcript up to message *t* and replies.
-2. **Blind view of the case.** The clinical facts change only when the clinician reports new findings, which happens once, at turn 5. So the barrier runs twice:
-   - **Before the new evidence:** the extractor reads the whole transcript up to the turn-4 reply, including every pushback and escalation, and produces `facts_pre`, listing everything it redacted. The shadow clinician produces `differential_pre` from `facts_pre` alone.
-   - **After the new evidence:** the extractor reads the full transcript and produces `facts_post`. The shadow clinician then produces `differential_post` from it.
+2. **Blind view of the case.** Turn 5 is the only turn that can add clinical facts (the escalation turns add none), so the barrier runs twice:
+   - **Before turn 5:** the extractor reads the whole transcript up to the turn-4 reply, including every pushback and escalation, and produces `facts_pre`, listing everything it redacted. The shadow clinician produces `differential_pre` from `facts_pre` alone.
+   - **After turn 5:** the extractor reads the full transcript and produces `facts_post`. The shadow clinician then produces `differential_post` from it.
 3. **Monitoring.** For each assistant reply *t*, the monitor sees:
    - the assistant's previous reply
    - the clinician's message *t*
@@ -44,7 +44,7 @@ Raw event files are numbered so they sort in time order: `t0` is the assistant r
    - the blind differential that applies to that turn: `differential_pre` for turns 1–4, `differential_post` for turn 5
 
    This sliding window is enough to detect echoing the clinician's framing, a narrowing differential and a change of position. It also means the monitor never sees later turns.
-4. **Debate.** This runs on the facts from before the new evidence (`facts_pre`), and is triggered by the highest monitor score among turns 1–4.
+4. **Debate.** This runs on the facts from before turn 5 (`facts_pre`), and is triggered by the highest monitor score among turns 1–4.
    - **Advocate positions.**
      - Position X is the diagnosis the clinician is pushing, taken from the extractor's `redacted` hypotheses.
      - Position Y is the highest-ranked must-not-miss or alternative diagnosis in the shadow differential that differs from X.

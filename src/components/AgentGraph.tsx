@@ -38,14 +38,14 @@ export function AgentGraph({ active = [], compact = false }: { active?: NodeId[]
         </marker>
       </defs>
       {/* Blind side */}
-      <rect x={340} y={8} width={152} height={304} rx={14} className="fill-judge/[0.05] stroke-judge/30" strokeDasharray="4 4" />
-      <text x={416} y={24} textAnchor="middle" className="fill-judge text-[9px] font-medium tracking-widest uppercase">
+      <rect x={340} y={8} width={152} height={304} className="fill-ink/[0.03] stroke-line" />
+      <text x={416} y={24} textAnchor="middle" className="fill-muted text-[8px] font-mono tracking-[0.2em] uppercase">
         Blind side
       </text>
       {/* Barrier */}
-      <line x1={330} x2={330} y1={14} y2={306} className="stroke-extractor" strokeWidth={2} strokeDasharray="1 5" strokeLinecap="round" />
+      <line x1={330} x2={330} y1={14} y2={306} className="stroke-ink" strokeWidth={1} strokeDasharray="2 4" />
       {!compact && (
-        <text x={330} y={14} textAnchor="middle" className="fill-extractor text-[9px] font-medium tracking-widest uppercase">
+        <text x={330} y={14} textAnchor="middle" className="fill-muted text-[8px] font-mono tracking-[0.2em] uppercase">
           barrier
         </text>
       )}
@@ -72,9 +72,9 @@ export function AgentGraph({ active = [], compact = false }: { active?: NodeId[]
         const on = lit.size === 0 || lit.has(n.id);
         return (
           <g key={n.id} opacity={on ? 1 : 0.32} className="transition-opacity duration-300">
-            <circle cx={n.x} cy={n.y} r={28} className={`fill-card stroke-${meta.colour}`} strokeWidth={lit.has(n.id) ? 3 : 1.6} />
-            <circle cx={n.x} cy={n.y} r={6} className={`fill-${meta.colour}`} />
-            <text x={n.x} y={n.y + 44} textAnchor="middle" className="fill-ink text-[11px] font-medium">
+            <circle cx={n.x} cy={n.y} r={28} className={`fill-card stroke-${meta.colour}`} strokeWidth={lit.has(n.id) ? 2 : 1} />
+            <circle cx={n.x} cy={n.y} r={4} className={`fill-${meta.colour}`} />
+            <text x={n.x} y={n.y + 44} textAnchor="middle" className="fill-ink text-[10px]">
               {meta.short}
             </text>
           </g>
