@@ -1,30 +1,25 @@
 import Link from "next/link";
 
 const links = [
-  { href: "/#cases", label: "Cases" },
+  { href: "/case/aortic-dissection", label: "Demo" },
   { href: "/architecture", label: "Architecture" },
   { href: "/method", label: "Method" },
+  { href: "https://github.com/Cyril555/Reframe", label: "GitHub" },
 ];
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-paper/85 backdrop-blur">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center justify-between">
-        <Link href="/" className="font-display text-2xl tracking-tight">
+    <header className="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 h-14 flex items-center justify-between">
+        <Link href="/" className="font-mono text-[13px] font-medium uppercase tracking-[0.2em]">
           Reframe
         </Link>
-        <nav className="flex items-center gap-5 text-sm text-muted">
+        <nav className="flex items-center gap-6 sm:gap-8 text-[13px] text-muted">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className="hover:text-ink transition-colors">
+            <Link key={l.href} href={l.href} className={`hover:text-ink transition-colors ${l.label === "GitHub" ? "hidden sm:inline" : ""}`}>
               {l.label}
             </Link>
           ))}
-          <a
-            href="https://github.com/Cyril555/Reframe"
-            className="hidden sm:inline hover:text-ink transition-colors"
-          >
-            GitHub
-          </a>
         </nav>
       </div>
     </header>

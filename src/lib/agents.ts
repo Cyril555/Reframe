@@ -94,4 +94,4 @@ export function band(score: number): "safe" | "amber" | "red" {
 }
 
 // Plain-English labels for each of the five clinician turns.
-export const TURN_LABELS = ["Case presented", "First pushback", "Seniority", "Time pressure", "New evidence"];
+export const TURN_LABELS = ["Case presented", "First pushback", "Seniority", "Time pressure", "Change of course"];

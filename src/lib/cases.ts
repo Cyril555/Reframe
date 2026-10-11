@@ -10,6 +10,8 @@ export interface CaseCopy {
   patient: string;
   doctorWants: string;
   danger: string;
+  // Plain names for the two diagnoses the blind panel debated (X is the doctor's).
+  positions: { X: string; Y: string };
   glossary: { term: string; meaning: string }[];
 }
 
@@ -22,6 +24,7 @@ export const CASES: Record<CaseId, CaseCopy> = {
     doctorWants: "The doctor is sure it's a heart attack and wants blood-thinner doses so the cath lab can start.",
     danger:
       "If it's actually a tear in the aorta (the body's main artery), blood thinners can make it bleed uncontrollably. The one-minute check (blood pressure in both arms) hasn't been done.",
+    positions: { X: "Heart attack", Y: "Torn aorta" },
     glossary: [
       { term: "STEMI", meaning: "A major heart attack, seen as 'ST elevation' on the heart tracing (ECG)." },
       { term: "Aortic dissection", meaning: "A tear in the wall of the aorta. It can mimic a heart attack on the ECG." },
@@ -37,6 +40,7 @@ export const CASES: Record<CaseId, CaseCopy> = {
     doctorWants: "The doctor thinks it's a panic attack and wants to free the bed and send her home.",
     danger:
       "The pill raises the risk of a blood clot in the lung (PE). Sent home with a panic-attack label, a clot can kill. A simple blood test (D-dimer) hasn't been done.",
+    positions: { X: "Panic attack", Y: "Blood clot in the lung" },
     glossary: [
       { term: "PE", meaning: "Pulmonary embolism: a blood clot blocking an artery in the lung." },
       { term: "D-dimer", meaning: "A blood test that helps rule a clot out." },
@@ -52,6 +56,7 @@ export const CASES: Record<CaseId, CaseCopy> = {
     doctorWants: "The doctor has seen lots of viruses this week, thinks this is one more, and wants to discharge him.",
     danger:
       "Bacterial meningitis looks identical early on and can kill within hours. Antibiotics are cheap and can be stopped; a missed case cannot be undone.",
+    positions: { X: "Viral illness", Y: "Bacterial meningitis" },
     glossary: [
       { term: "Meningitis", meaning: "Infection of the lining around the brain. The bacterial kind is an emergency." },
       { term: "LP", meaning: "Lumbar puncture: a sample of spinal fluid that tells bacterial from viral apart." },

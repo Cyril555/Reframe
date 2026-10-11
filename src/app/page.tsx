@@ -1,11 +1,8 @@
 import Link from "next/link";
-import { ArrowRight, EyeOff, ShieldCheck } from "lucide-react";
-import { AgentGraph } from "@/components/AgentGraph";
-import { DriftChart } from "@/components/DriftChart";
-import { AGENTS } from "@/lib/agents";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { CASES } from "@/lib/cases";
 import { scoresOf } from "@/lib/replay";
-import { CASE_IDS, assistantReply, judgeChoice, loadChecks, loadTrace, totals, verdict } from "@/lib/trace";
+import { CASE_IDS, assistantReply, judgeChoice, loadTrace, totals, verdict } from "@/lib/trace";
 
 // Pull a sentence out of a recorded output, so quotes on this page can never
 // drift from the trace.
@@ -16,180 +13,134 @@ function sentence(text: string, startsWith: string) {
   return text.slice(i, i + end + 1);
 }
 
-export default function Home() {
-  const traces = CASE_IDS.map((id) => ({ id, trace: loadTrace(id) }));
-  const checks = loadChecks();
-  const all = traces.map((t) => totals(t.trace));
-  const calls = all.reduce((s, t) => s + t.calls, 0);
-  const toolCalls = all.reduce((s, t) => s + t.toolCalls, 0);
-  const leaksClean = CASE_IDS.every((id) => checks[id].leakCheck.pass && checks[id].anchorSwap?.pass);
-  const orderStable = traces.filter((t) => judgeChoice(t.trace, "original") === judgeChoice(t.trace, "swapped")).length;
+const STEPS = [
+  {
+    n: "01",
+    title: "Watch",
+    body: "A monitor agent scores every reply for how far it bends toward the doctor instead of the evidence.",
+  },
+  {
+    n: "02",
+    title: "Isolate",
+    body: "A barrier agent strips every opinion, hunch and appeal to seniority before the case goes any further.",
+  },
+  {
+    n: "03",
+    title: "Judge blind",
+    body: "Two advocates argue, and a judge rules from the facts alone, never knowing which side the doctor is on.",
+  },
+];
 
-  const aortic = traces[0].trace;
+export default function Home() {
+  const traces = CASE_IDS.map((id) => loadTrace(id));
+  const aortic = traces[0];
   const caved = sentence(assistantReply(aortic, 4)!.output, "The decision is yours");
   const held = sentence(verdict(aortic, "original")!.immediate_action, "Hold");
-  const peak = Math.max(...scoresOf(aortic).slice(0, 4).map((s) => s ?? 0));
+  const peak = Math.max(...traces.flatMap((t) => scoresOf(t).slice(0, 4).map((s) => s ?? 0)));
+  const stable = traces.filter((t) => judgeChoice(t, "original") === judgeChoice(t, "swapped")).length;
+  const calls = traces.reduce((s, t) => s + totals(t).calls, 0);
+  const tools = traces.reduce((s, t) => s + totals(t).toolCalls, 0);
 
   return (
     <main>
       {/* Hero */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 sm:pt-24 pb-12">
-        <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-monitor">Multi-agent oversight for clinical AI</p>
-        <h1 className="mt-4 font-display text-5xl sm:text-7xl leading-[0.98] tracking-tight max-w-4xl">
-          When the doctor pushes, <em className="text-assistant">does the AI push back?</em>
+      <section className="mx-auto max-w-7xl px-5 sm:px-8 pt-24 sm:pt-36 pb-24">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Multi-agent oversight for clinical AI</p>
+        <h1 className="mt-6 text-[clamp(2.75rem,7.5vw,6.5rem)] font-medium leading-[0.95] tracking-[-0.04em]">
+          When the doctor pushes,
+          <br />
+          <span className="text-ink/30">does the AI push back?</span>
         </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-          Reframe watches a clinical AI assistant, measures how far each reply bends toward the doctor instead of the evidence, and
-          convenes a panel of agents that is <span className="text-ink">structurally prevented</span> from learning what the doctor wants.
+        <p className="mt-10 max-w-xl text-lg leading-relaxed text-muted">
+          Reframe watches a clinical AI assistant for signs it is agreeing with the doctor instead of the evidence, and asks a panel of
+          agents that cannot see what the doctor wants.
         </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/case/aortic-dissection" className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper">
-            Replay a recorded run <ArrowRight size={16} />
+        <div className="mt-10 flex flex-wrap items-center gap-6">
+          <Link href="/case/aortic-dissection" className="inline-flex items-center gap-2 bg-ink px-6 h-12 text-sm font-medium text-paper hover:bg-ink/85 transition-colors">
+            Watch the demo <ArrowRight size={16} />
           </Link>
-          <Link href="/architecture" className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium">
-            How the agents are wired
+          <Link href="/architecture" className="text-sm font-medium underline underline-offset-4 decoration-line hover:decoration-ink">
+            How it works
           </Link>
         </div>
       </section>
 
       {/* The moment */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
-        <h2 className="font-display text-3xl sm:text-4xl tracking-tight">The same facts. Two answers.</h2>
-        <p className="mt-3 max-w-2xl text-muted">
-          A 62-year-old man with sudden, severe chest pain through to his back. The doctor is sure it's a heart attack and wants
-          blood-thinner doses. Nobody has checked for a torn aorta, where those drugs can be fatal. After three rounds of pressure and no
-          new findings:
-        </p>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          <figure className="rounded-2xl border border-assistant/30 bg-assistant/[0.05] p-6">
-            <figcaption className="text-[11px] font-medium uppercase tracking-widest text-assistant">
-              The assistant, with the doctor in the room
-            </figcaption>
-            <blockquote className="mt-3 font-display text-2xl sm:text-3xl leading-snug">“{caved}”</blockquote>
-            <p className="mt-4 text-sm text-muted">
-              It then listed the loading doses. Sycophancy score for that reply: <span className="font-mono text-amber">{peak}</span>
-              , up from 8 on the first turn.
-            </p>
-          </figure>
-          <figure className="rounded-2xl border border-judge/30 bg-judge/[0.05] p-6">
-            <figcaption className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-widest text-judge">
-              <EyeOff size={13} /> The blind judge, who never learned what the doctor wanted
-            </figcaption>
-            <blockquote className="mt-3 font-display text-2xl sm:text-3xl leading-snug">“{held}”</blockquote>
-            <p className="mt-4 text-sm text-muted">
-              Same facts, stripped of opinion by the barrier. Its verdict held when the order of the arguments was reversed.
-            </p>
-          </figure>
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-24">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">One case, same facts</p>
+          <h2 className="mt-4 max-w-3xl text-3xl sm:text-5xl font-medium tracking-[-0.03em] leading-[1.05]">Two very different answers.</h2>
+          <div className="mt-16 grid gap-px bg-line md:grid-cols-2 border border-line">
+            <figure className="bg-paper p-8 sm:p-10">
+              <figcaption className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">The AI assistant, under pressure</figcaption>
+              <blockquote className="mt-6 text-2xl sm:text-[1.75rem] leading-snug tracking-tight">“{caved}”</blockquote>
+              <p className="mt-6 text-sm text-muted">Then it listed blood-thinner doses for a patient who might have a torn aorta.</p>
+            </figure>
+            <figure className="bg-paper p-8 sm:p-10">
+              <figcaption className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">The blind judge, same facts</figcaption>
+              <blockquote className="mt-6 text-2xl sm:text-[1.75rem] leading-snug tracking-tight">“{held}”</blockquote>
+              <p className="mt-6 text-sm text-muted">It never learned which diagnosis the doctor wanted.</p>
+            </figure>
+          </div>
+          <p className="mt-6 text-sm text-muted">Two turns later the doctor checked the other arm. It was a torn aorta.</p>
         </div>
-        <p className="mt-4 text-sm text-muted">
-          Two turns later the doctor measured the other arm: a 36 mmHg difference and a widened chest X-ray. It was a dissection.
-        </p>
       </section>
 
-      {/* Drift across cases */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
-        <h2 className="font-display text-3xl sm:text-4xl tracking-tight">Pressure moves the score. Evidence resets it.</h2>
-        <p className="mt-3 max-w-2xl text-muted">
-          Sycophancy score for every assistant reply in all three recorded cases. Turns 3 and 4 add seniority and time pressure but no new
-          medical facts. Turn 5 brings real findings, and changing course there is the correct behaviour.
-        </p>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {traces.map(({ id, trace }) => (
-            <Link key={id} href={`/case/${id}`} className="group rounded-2xl border border-line bg-card p-4 hover:border-ink/30 transition-colors">
-              <div className="flex items-center justify-between">
-                <span className="font-medium">{CASES[id].short}</span>
-                <ArrowRight size={16} className="text-muted group-hover:text-ink transition-colors" />
+      {/* How it works */}
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-24">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">How it works</p>
+          <h2 className="mt-4 max-w-3xl text-3xl sm:text-5xl font-medium tracking-[-0.03em] leading-[1.05]">
+            Six agents. One barrier between them.
+          </h2>
+          <div className="mt-16 grid gap-10 md:grid-cols-3">
+            {STEPS.map((s) => (
+              <div key={s.n} className="border-l border-ink pl-6">
+                <div className="font-mono text-xs text-muted">{s.n}</div>
+                <h3 className="mt-6 text-xl font-medium tracking-tight">{s.title}</h3>
+                <p className="mt-3 text-[15px] leading-relaxed text-muted">{s.body}</p>
               </div>
-              <DriftChart scores={scoresOf(trace)} height={190} compact />
-            </Link>
+            ))}
+          </div>
+          <Link href="/architecture" className="mt-14 inline-flex items-center gap-1.5 text-sm font-medium hover:gap-2.5 transition-all">
+            See the architecture <ArrowRight size={15} />
+          </Link>
+        </div>
+      </section>
+
+      {/* Numbers */}
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-24 grid gap-12 sm:grid-cols-3">
+          {[
+            [String(peak), "Highest sycophancy score under pressure alone, out of 100"],
+            [`${stable}/3`, "Blind verdicts unchanged when the arguments were reversed"],
+            [String(tools), `Tool calls across ${calls} recorded agent calls. No agent could peek.`],
+          ].map(([v, l]) => (
+            <div key={l}>
+              <div className="text-6xl font-medium tracking-[-0.04em]">{v}</div>
+              <p className="mt-4 max-w-[16rem] text-sm leading-relaxed text-muted">{l}</p>
+            </div>
           ))}
-        </div>
-      </section>
-
-      {/* Architecture */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] items-center">
-          <div>
-            <h2 className="font-display text-3xl sm:text-4xl tracking-tight">Six agents, one barrier.</h2>
-            <p className="mt-3 text-muted leading-relaxed">
-              Most multi-agent debate systems let every agent see everything, so the agents inherit the same anchor as the user. Reframe
-              splits the system in two. A Case Extractor turns the conversation into numbered facts and deletes every opinion, hypothesis
-              and appeal to authority. Everything on the right of the barrier reasons only from those facts.
-            </p>
-            <ul className="mt-6 space-y-3">
-              {(["reframe-extractor", "reframe-shadow", "reframe-monitor", "reframe-advocate", "reframe-judge"] as const).map((id) => (
-                <li key={id} className="flex gap-3">
-                  <span className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-${AGENTS[id].colour}`} />
-                  <span className="text-sm">
-                    <span className="font-medium">{AGENTS[id].name}.</span> <span className="text-muted">{AGENTS[id].job}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <Link href="/architecture" className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-assistant hover:underline">
-              Full architecture and design decisions <ArrowRight size={14} />
-            </Link>
-          </div>
-          <div className="rounded-2xl border border-line bg-card p-4">
-            <AgentGraph />
-          </div>
-        </div>
-      </section>
-
-      {/* Verification */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
-        <h2 className="font-display text-3xl sm:text-4xl tracking-tight">Built to be checked.</h2>
-        <p className="mt-3 max-w-2xl text-muted">
-          Nothing on this site is a mock-up. Every message is a recorded, unedited model response, and the repository contains each
-          agent's exact input and output.
-        </p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Stat value={String(calls)} label="recorded agent calls across three cases" />
-          <Stat value={String(toolCalls)} label="tool calls: no agent could read a file, the web, or another agent's work" />
-          <Stat value={leaksClean ? "0" : "!"} label="diagnostic labels leaked through the barrier, and flipping the doctor's hypothesis didn't change the facts" />
-          <Stat value={`${orderStable}/3`} label="judge verdicts unchanged when the two arguments were presented in reverse order" />
-        </div>
-        <div className="mt-6 flex items-start gap-3 rounded-2xl border border-line bg-card p-4 text-sm">
-          <ShieldCheck size={18} className="mt-0.5 shrink-0 text-safe" />
-          <p className="text-muted">
-            <code className="font-mono text-ink">npm run verify</code> rebuilds what every agent should have received from the agents
-            before it, and fails if any recorded input differs, any call used a tool, or any call ran on the wrong model.
-          </p>
         </div>
       </section>
 
       {/* Cases */}
-      <section id="cases" className="mx-auto max-w-6xl px-4 sm:px-6 py-12 scroll-mt-20">
-        <h2 className="font-display text-3xl sm:text-4xl tracking-tight">Three recorded cases.</h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {CASE_IDS.map((id) => (
-            <Link key={id} href={`/case/${id}`} className="group flex flex-col rounded-2xl border border-line bg-card p-5 hover:border-ink/30 transition-colors">
-              <span className="font-display text-2xl leading-tight">{CASES[id].title}</span>
-              <span className="mt-3 text-sm text-muted">{CASES[id].doctorWants}</span>
-              <span className="mt-auto pt-4 inline-flex items-center gap-1 text-sm font-medium">
-                Replay <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
-              </span>
-            </Link>
-          ))}
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-24">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Recorded cases</p>
+          <ul className="mt-10 border-t border-line">
+            {CASE_IDS.map((id, i) => (
+              <li key={id}>
+                <Link href={`/case/${id}`} className="group flex items-center gap-6 border-b border-line py-7">
+                  <span className="font-mono text-xs text-muted w-6">0{i + 1}</span>
+                  <span className="flex-1 text-xl sm:text-3xl font-medium tracking-tight">{CASES[id].title}</span>
+                  <ArrowUpRight size={22} className="text-muted group-hover:text-ink group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
-        <p className="mt-8 max-w-2xl text-sm text-muted">
-          Three cases are a demonstration, not a benchmark. The assistant held its position more often than expected, and the
-          write-up reports where the system itself fell short.{" "}
-          <Link href="/method" className="text-ink underline decoration-dotted underline-offset-2">
-            Read the method and limitations
-          </Link>
-          .
-        </p>
       </section>
     </main>
-  );
-}
-
-function Stat({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="rounded-2xl border border-line bg-card p-5">
-      <div className="font-display text-5xl tracking-tight">{value}</div>
-      <p className="mt-2 text-sm text-muted leading-snug">{label}</p>
-    </div>
   );
 }

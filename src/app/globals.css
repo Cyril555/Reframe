@@ -2,68 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Colour tokens (RGB triplets so Tailwind can apply opacity). */
+/* Light, monochrome palette. RGB triplets so Tailwind can apply opacity. */
 :root {
-  --paper: 250 249 246;
+  --paper: 255 255 255;
   --card: 255 255 255;
-  --ink: 24 24 27;
-  --muted: 100 100 110;
-  --line: 228 226 220;
+  --panel: 245 245 244;
+  --ink: 28 28 28;
+  --muted: 112 112 112;
+  --line: 229 229 229;
 
-  --clinician: 87 83 78;
-  --assistant: 37 99 235;
-  --extractor: 202 138 4;
-  --shadow: 13 148 136;
-  --monitor: 225 29 72;
-  --advocate: 124 58 237;
-  --judge: 5 150 105;
+  /* Agents are told apart by position and label, not colour. */
+  --clinician: 28 28 28;
+  --assistant: 28 28 28;
+  --extractor: 28 28 28;
+  --shadow: 28 28 28;
+  --monitor: 28 28 28;
+  --advocate: 28 28 28;
+  --judge: 28 28 28;
 
-  --safe: 22 163 74;
-  --amber: 217 119 6;
-  --red: 220 38 38;
+  /* Reserved for scores only. */
+  --safe: 46 125 80;
+  --amber: 178 106 0;
+  --red: 180 35 24;
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: 17 17 19;
-    --card: 26 26 29;
-    --ink: 236 236 238;
-    --muted: 160 160 170;
-    --line: 48 48 54;
-
-    --clinician: 168 162 158;
-    --assistant: 96 165 250;
-    --extractor: 250 204 21;
-    --shadow: 45 212 191;
-    --monitor: 251 113 133;
-    --advocate: 167 139 250;
-    --judge: 52 211 153;
-
-    --safe: 74 222 128;
-    --amber: 251 191 36;
-    --red: 248 113 113;
-    color-scheme: dark;
-  }
-}
-
-:root[data-theme="dark"] {
-  --paper: 17 17 19;
-  --card: 26 26 29;
-  --ink: 236 236 238;
-  --muted: 160 160 170;
-  --line: 48 48 54;
-  --clinician: 168 162 158;
-  --assistant: 96 165 250;
-  --extractor: 250 204 21;
-  --shadow: 45 212 191;
-  --monitor: 251 113 133;
-  --advocate: 167 139 250;
-  --judge: 52 211 153;
-  --safe: 74 222 128;
-  --amber: 251 191 36;
-  --red: 248 113 113;
-  color-scheme: dark;
 }
 
 html {
@@ -73,35 +34,51 @@ html {
 body {
   background: rgb(var(--paper));
   color: rgb(var(--ink));
+  font-feature-settings: "ss01", "cv11";
 }
 
 ::selection {
-  background: rgb(var(--assistant) / 0.2);
+  background: rgb(var(--ink) / 0.12);
 }
 
 /* Markdown written by the assistant agent. */
 .prose-reply {
-  font-size: 0.9rem;
+  font-size: 0.9375rem;
   line-height: 1.6;
 }
 .prose-reply h1,
 .prose-reply h2,
 .prose-reply h3 {
   font-weight: 600;
-  margin: 1rem 0 0.4rem;
+  margin: 0.9rem 0 0.35rem;
+  letter-spacing: -0.01em;
 }
 .prose-reply h2 { font-size: 1rem; }
-.prose-reply h3 { font-size: 0.92rem; }
+.prose-reply h3 { font-size: 0.9375rem; }
 .prose-reply > :first-child { margin-top: 0; }
 .prose-reply p { margin: 0 0 0.6rem; }
-.prose-reply ul { list-style: disc; padding-left: 1.25rem; margin: 0 0 0.6rem; }
-.prose-reply ol { list-style: decimal; padding-left: 1.25rem; margin: 0 0 0.6rem; }
+.prose-reply ul { list-style: disc; padding-left: 1.2rem; margin: 0 0 0.6rem; }
+.prose-reply ol { list-style: decimal; padding-left: 1.2rem; margin: 0 0 0.6rem; }
 .prose-reply li { margin: 0.15rem 0; }
 .prose-reply strong { font-weight: 600; }
 .prose-reply hr { border-color: rgb(var(--line)); margin: 0.9rem 0; }
 .prose-reply table { width: 100%; border-collapse: collapse; margin: 0.6rem 0; font-size: 0.82rem; display: block; overflow-x: auto; }
 .prose-reply th, .prose-reply td { border: 1px solid rgb(var(--line)); padding: 0.35rem 0.55rem; text-align: left; vertical-align: top; }
-.prose-reply th { background: rgb(var(--ink) / 0.04); font-weight: 600; }
+.prose-reply th { background: rgb(var(--panel)); font-weight: 600; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.animate-rise { animation: rise 0.35s ease-out both; }
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
+}
+.typing-dot { animation: blink 1.2s infinite both; }
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
