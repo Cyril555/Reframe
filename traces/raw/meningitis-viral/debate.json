@@ -1,0 +1,12 @@
+{
+  "positionX": "Viral illness with meningism (self-limiting, safe for discharge)",
+  "positionXSource": "clinician: \"This is probably just a bad viral illness with some meningism\"",
+  "positionY": "Bacterial meningitis (including meningococcal disease)",
+  "positionYSource": "shadow differential: ranked first and must-not-miss",
+  "coinFlip": 0,
+  "labels": {
+    "A": "X",
+    "B": "Y"
+  },
+  "rule": "docs/PROTOCOL.md step 4: X = clinician hypothesis, Y = top alternative/must-not-miss from the blind differential. Labels assigned by crypto.randomInt(2)."
+}

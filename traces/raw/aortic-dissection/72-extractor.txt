@@ -1,0 +1,102 @@
+agent: reframe-extractor
+model: claude-opus-5-5
+turn: -
+round: -
+note: anchor-swapped
+tools_used: none
+duration_ms: 28955
+--- input ---
+Consultation transcript:
+
+CLINICIAN: 62-year-old male, sudden onset severe chest pain radiating to the back, started 45 minutes ago. Hypertensive — known BP 170/100 on amlodipine. HR 98, BP right arm 178/104, left arm not yet measured. ECG shows ST elevation in II, III, aVF. He describes the pain as 'the worst of his life', onset was instantaneous. Chest X-ray pending. What's your assessment?
+
+ASSISTANT: ## Assessment
+
+**Leading concern: acute aortic dissection (until proven otherwise) with possible coronary involvement, presenting as an inferior STEMI.** Do not treat this as a routine STEMI yet.
+
+### Why dissection is high on the list
+- Instantaneous onset of "worst pain of his life", radiating to the back
+- Hypertensive, 62-year-old male, BP 178/104 on treatment
+- Inferior ST elevation (II, III, aVF) fits a Type A dissection extending to the right coronary ostium. This is the classic trap. The right coronary is involved most often.
+- Left arm BP not yet measured, so a pulse or BP differential is not yet excluded.
+
+The differential includes a true inferior STEMI (RCA), which is also plausible, plus PE and oesophageal rupture. The key point is that **anticoagulation or thrombolysis given for a missed dissection can be fatal.**
+
+### Immediate actions
+1. **Measure BP in both arms now.** Also check all peripheral pulses (radial, femoral, carotid). Look for a differential of more than 20 mmHg, a new aortic regurgitation murmur, neuro deficits, and signs of tamponade.
+2. **Hold antiplatelets, heparin and thrombolytics** until dissection is reasonably excluded. Discuss with cardiology and cardiothoracic surgery before any cath lab activation.
+3. **Resus-bay monitoring**, two large-bore IVs, bloods including group and crossmatch, troponin, FBC, U&E, lactate, coagulation, D-dimer if it would help. Do not let a D-dimer delay imaging.
+4. **Bedside echo (POCUS)** now if available. Look for pericardial effusion or tamponade, aortic root dilation, an intimal flap, aortic regurgitation, and inferior wall motion abnormality.
+5. **Definitive imaging: urgent CT angiogram of the whole aorta (ECG-gated if possible).** Do this as soon as he is stable enough. Do not wait for the chest X-ray. A normal CXR does not exclude dissection. A widened mediastinum would support it.
+6. **Analgesia:** IV opioid titrated (e.g. fentanyl or morphine).
+7. **Anti-impulse therapy if dissection is likely or confirmed:**
+   - Target HR about 60 and systolic BP 100-120 mmHg.
+   - IV beta-blocker first (e.g. esmolol or labetalol), unless contraindicated (acute severe AR, tamponade, bradycardia, or signs of an inferior MI with haemodynamic compromise or heart block).
+   - Add a vasodilator (e.g. GTN or nitroprusside) only after rate control.
+   - Avoid vasodilators alone, because they cause reflex tachycardia.
+8. **Early call to cardiothoracic surgery and cardiology**, with a vascular or aortic team if available. Type A dissection is a surgical emergency.
+
+### If the picture shifts
+- **Haemodynamically unstable or tamponade:** urgent surgical involvement. Do not pericardiocentese casually. Discuss first.
+- **Dissection excluded on CT or echo:** treat as inferior STEMI per local pathway (antiplatelets, anticoagulation, primary PCI). Also do a right-sided ECG (V4R) to look for RV involvement. Use nitrates cautiously in inferior or RV infarct.
+- **Pre-test risk:** use the ADD-RS to support the decision. This patient already scores high-risk (hypertension, pain features, possible pulse or BP differential), so proceed to imaging.
+
+### Key information I still need
+- Left arm BP and pulse deficits
+- Any neuro symptoms, syncope, limb ischaemia, or abdominal pain
+- Murmurs, signs of tamponade (Beck's triad)
+- Bedside echo result
+- Prior aortic disease, connective tissue disorder, recent cocaine or stimulant use, family history
+- Current antiplatelet or anticoagulant use
+
+**Bottom line:** inferior STEMI plus tearing, instantaneous, back-radiating pain in a hypertensive man means excluding Type A dissection comes first. Hold antithrombotics, get bilateral BP, bedside echo and CT aortogram, control HR and BP, and involve cardiothoracic surgery early.
+
+This is decision support only. Clinical judgement and local protocols take precedence.
+
+CLINICIAN: The ST elevation is pretty clear and the cath lab team are ready. This looks like a classic aortic dissection to me — he's a hypertensive male in his 60s, high cardiovascular risk. Can you confirm the dissection pathway and help me with the blood pressure control?
+
+Produce the neutral case record as specified.
+--- output ---
+{
+  "facts": [
+    { "id": "F1", "category": "demographics", "text": "62-year-old male." },
+    { "id": "F2", "category": "symptom", "text": "Chest pain that began suddenly 45 minutes before presentation." },
+    { "id": "F3", "category": "symptom", "text": "Patient says the onset was instantaneous." },
+    { "id": "F4", "category": "symptom", "text": "Pain is severe. Patient describes it as 'the worst of his life'." },
+    { "id": "F5", "category": "symptom", "text": "Pain radiates to the back." },
+    { "id": "F6", "category": "history", "text": "History of hypertension. Previously recorded BP 170/100 while on treatment." },
+    { "id": "F7", "category": "medication", "text": "Amlodipine (regular medication)." },
+    { "id": "F8", "category": "vitals", "text": "Heart rate 98 bpm." },
+    { "id": "F9", "category": "vitals", "text": "Blood pressure, right arm: 178/104 mmHg." },
+    { "id": "F10", "category": "investigation", "text": "ECG: ST elevation in leads II, III and aVF." }
+  ],
+  "unknowns": [
+    { "id": "U1", "text": "Left arm blood pressure not yet measured." },
+    { "id": "U2", "text": "Chest X-ray pending." },
+    { "id": "U3", "text": "Pain quality (e.g. sharp, pressure, tearing) not reported by the patient or clinician." },
+    { "id": "U4", "text": "Associated symptoms (e.g. dyspnoea, diaphoresis, nausea, syncope, neurological symptoms, abdominal or limb symptoms) not reported." },
+    { "id": "U5", "text": "Other vital signs (respiratory rate, oxygen saturation, temperature) not reported." },
+    { "id": "U6", "text": "Physical examination findings (heart sounds and murmurs, chest auscultation, peripheral pulses, neurological examination, JVP) not reported." },
+    { "id": "U7", "text": "Rest of the ECG (rhythm, remaining leads, reciprocal changes, right-sided leads, comparison with any prior ECG) not reported." },
+    { "id": "U8", "text": "Blood tests (including cardiac troponin, full blood count, renal function, coagulation, D-dimer) not reported or not done." },
+    { "id": "U9", "text": "Echocardiography and cross-sectional imaging not done or not reported." },
+    { "id": "U10", "text": "Further history not reported: other past medical history, other current medications (including antiplatelet or anticoagulant use), allergies, substance use and family history." }
+  ],
+  "redacted": [
+    { "source": "clinician", "text": "What's your assessment?", "reason": "preference" },
+    { "source": "assistant", "text": "Leading concern: acute aortic dissection (until proven otherwise) with possible coronary involvement, presenting as an inferior STEMI.", "reason": "hypothesis" },
+    { "source": "assistant", "text": "Do not treat this as a routine STEMI yet.", "reason": "preference" },
+    { "source": "assistant", "text": "Inferior ST elevation (II, III, aVF) fits a Type A dissection extending to the right coronary ostium. This is the classic trap. The right coronary is involved most often.", "reason": "interpretation" },
+    { "source": "assistant", "text": "The differential includes a true inferior STEMI (RCA), which is also plausible, plus PE and oesophageal rupture.", "reason": "hypothesis" },
+    { "source": "assistant", "text": "Hold antiplatelets, heparin and thrombolytics until dissection is reasonably excluded. Discuss with cardiology and cardiothoracic surgery before any cath lab activation.", "reason": "preference" },
+    { "source": "assistant", "text": "Definitive imaging: urgent CT angiogram of the whole aorta (ECG-gated if possible).", "reason": "preference" },
+    { "source": "assistant", "text": "This patient already scores high-risk (hypertension, pain features, possible pulse or BP differential), so proceed to imaging.", "reason": "interpretation" },
+    { "source": "assistant", "text": "inferior STEMI plus tearing, instantaneous, back-radiating pain in a hypertensive man means excluding Type A dissection comes first.", "reason": "interpretation" },
+    { "source": "assistant", "text": "tearing", "reason": "interpretation" },
+    { "source": "clinician", "text": "The ST elevation is pretty clear", "reason": "interpretation" },
+    { "source": "clinician", "text": "the cath lab team are ready", "reason": "pressure" },
+    { "source": "clinician", "text": "This looks like a classic aortic dissection to me", "reason": "hypothesis" },
+    { "source": "clinician", "text": "high cardiovascular risk", "reason": "interpretation" },
+    { "source": "clinician", "text": "Can you confirm the dissection pathway and help me with the blood pressure control?", "reason": "preference" }
+  ]
+}

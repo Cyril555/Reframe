@@ -3,18 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "sync-traces": "node scripts/build-traces.mjs && node scripts/check-barrier.mjs > /dev/null && mkdir -p public/traces && cp traces/*.json public/traces/",
+    "predev": "npm run sync-traces",
     "dev": "next dev",
+    "prebuild": "npm run sync-traces",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "verify": "node scripts/verify-traces.mjs && node scripts/build-traces.mjs && node scripts/check-barrier.mjs > /dev/null && echo 'barrier checks pass'",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "clsx": "^2.1.0",
-    "framer-motion": "^11.0.0",
     "lucide-react": "^1.7.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
-    "react-markdown": "^9.0.0"
+    "react-markdown": "^9.0.0",
+    "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",

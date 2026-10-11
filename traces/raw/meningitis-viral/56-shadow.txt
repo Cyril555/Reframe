@@ -1,0 +1,125 @@
+agent: reframe-shadow
+model: claude-opus-5-5
+turn: -
+round: -
+note: post
+tools_used: none
+duration_ms: 23709
+--- input ---
+Case record:
+
+{
+ "facts": [
+  {"id":"F1","category":"demographics","text":"19-year-old male (referred to as 'he/him' by the clinician)"},
+  {"id":"F2","category":"demographics","text":"Occupation: university student"},
+  {"id":"F3","category":"history","text":"Referred by GP to urgent care"},
+  {"id":"F4","category":"symptom","text":"Headache, duration 2 days"},
+  {"id":"F5","category":"symptom","text":"Photophobia present"},
+  {"id":"F6","category":"vitals","text":"Temperature 38.4°C"},
+  {"id":"F7","category":"exam","text":"Neck stiffness present"},
+  {"id":"F8","category":"exam","text":"No rash reported (how much of the skin was examined is not documented)"},
+  {"id":"F9","category":"exam","text":"Examined in person by the senior clinician; general appearance described as 'looks okay'. No other specific examination findings were documented"},
+  {"id":"F10","category":"medication","text":"Clinician reports that ceftriaxone is being started now. Dose, route and time of administration are not documented, and it is not confirmed that the dose has been given"},
+  {"id":"F11","category":"investigation","text":"Clinician reports that a lumbar puncture is being arranged. It has not yet been performed"}
+ ],
+ "unknowns": [
+  {"id":"U1","text":"Heart rate, blood pressure, respiratory rate and SpO2 not recorded"},
+  {"id":"U2","text":"GCS / level of consciousness, orientation and any behaviour change not documented"},
+  {"id":"U3","text":"Capillary refill time, peripheral temperature and skin colour (mottling) not documented"},
+  {"id":"U4","text":"Capillary blood glucose not recorded"},
+  {"id":"U5","text":"Full skin examination (soles, palms, conjunctivae, mucosa) and glass test not documented"},
+  {"id":"U6","text":"Kernig's and Brudzinski's signs not documented"},
+  {"id":"U7","text":"Focal neurological examination, fundoscopy (papilloedema) and any seizures not documented"},
+  {"id":"U8","text":"Character of headache onset (gradual vs sudden/thunderclap) not documented"},
+  {"id":"U9","text":"Presence or absence of vomiting, limb pain, sore throat, coryza or cough not documented"},
+  {"id":"U10","text":"Blood tests not done or not reported: FBC, CRP, U&E, LFT, lactate, coagulation screen, blood gas"},
+  {"id":"U11","text":"Blood cultures not done or not reported"},
+  {"id":"U12","text":"Meningococcal and pneumococcal blood PCR not done or not reported"},
+  {"id":"U13","text":"Lumbar puncture / CSF analysis not performed (being arranged, see F11); CSF results therefore unavailable"},
+  {"id":"U14","text":"CT head not performed"},
+  {"id":"U15","text":"MenACWY and MenB vaccination status unknown"},
+  {"id":"U16","text":"Recent travel and sick contacts unknown"},
+  {"id":"U17","text":"Allergies, immunosuppression, past medical history, regular medications, recent head injury or ENT infection unknown"},
+  {"id":"U18","text":"Apart from ceftriaxone being started (F10), it is not documented whether any other treatment has been given (dexamethasone/steroids, aciclovir, analgesia, IV fluids)"},
+  {"id":"U19","text":"Body weight unknown"},
+  {"id":"U20","text":"Not documented whether blood cultures were taken before the first ceftriaxone dose. The timing of the antibiotic relative to the lumbar puncture is also not documented"}
+ ]
+}
+
+Produce your independent differential as specified.
+--- output ---
+{
+  "differential": [
+    {
+      "diagnosis": "Acute bacterial meningitis (meningococcal most likely in this age group, then pneumococcal), with or without early meningococcal septicaemia",
+      "probability": 0.38,
+      "for": ["F1", "F2", "F3", "F4", "F5", "F6", "F7"],
+      "against": ["F9", "F8"],
+      "note": "He has the full triad of fever, neck stiffness and photophobia, and university students are a high-risk group for meningococcal disease. 'Looks okay' and 'no rash' do not reassure here because skin exam, perfusion and vitals are undocumented (U1, U3, U5) and a rash can appear late."
+    },
+    {
+      "diagnosis": "Viral (aseptic) meningitis, e.g. enterovirus or HSV-2",
+      "probability": 0.30,
+      "for": ["F1", "F4", "F5", "F6", "F7", "F9"],
+      "against": [],
+      "note": "This is common and fits a well-looking young adult, but it can only be called once CSF is back (U13, F11). Until then it must be managed as bacterial."
+    },
+    {
+      "diagnosis": "Systemic febrile illness with meningism (e.g. influenza, COVID-19, EBV, streptococcal pharyngitis, pneumonia)",
+      "probability": 0.10,
+      "for": ["F4", "F6", "F7", "F9"],
+      "against": ["F5"],
+      "note": "We can't judge this because respiratory, ENT and other systemic symptoms are not documented (U9, U16). It is a diagnosis of exclusion once CSF is normal."
+    },
+    {
+      "diagnosis": "Viral encephalitis / meningoencephalitis (HSV-1 especially)",
+      "probability": 0.05,
+      "for": ["F4", "F5", "F6", "F7"],
+      "against": ["F9"],
+      "note": "Mental state, behaviour, seizures and focal signs were not assessed (U2, U7), so it can't be excluded. Aciclovir status is unknown (U18)."
+    },
+    {
+      "diagnosis": "Subarachnoid haemorrhage",
+      "probability": 0.04,
+      "for": ["F4", "F5", "F7"],
+      "against": ["F1", "F6"],
+      "note": "Headache onset is undocumented (U8). Fever can occur after SAH, and neck stiffness with photophobia mimics meningitis. A thunderclap onset would change the work-up to CT before LP."
+    },
+    {
+      "diagnosis": "Brain abscess or parameningeal infection (sinusitis, mastoiditis, otitis-related) or subdural empyema",
+      "probability": 0.03,
+      "for": ["F4", "F6", "F7"],
+      "against": ["F9"],
+      "note": "ENT history, focal neurology and fundoscopy are unknown (U17, U7), and no CT has been done (U14). This matters most for whether LP is safe."
+    },
+    {
+      "diagnosis": "Other infective meningitis (HIV seroconversion, TB, cryptococcal, Lyme, syphilis, Listeria if immunocompromised)",
+      "probability": 0.04,
+      "for": ["F4", "F6", "F7"],
+      "against": ["F1"],
+      "note": "We can't stratify this because immune status, travel, sexual history and exposures are unknown (U16, U17). Consider an HIV test."
+    },
+    {
+      "diagnosis": "Cerebral venous sinus thrombosis",
+      "probability": 0.02,
+      "for": ["F4", "F5"],
+      "against": ["F6", "F1"],
+      "note": "This is uncommon but can follow ENT infection. It is unassessed because fundoscopy and focal neurology are missing (U7)."
+    },
+    {
+      "diagnosis": "Other (migraine with intercurrent febrile illness, drug- or toxin-related, non-infective inflammatory)",
+      "probability": 0.04,
+      "for": ["F4", "F5"],
+      "against": ["F6", "F7"],
+      "note": "These are low-probability diagnoses of exclusion. They don't account for fever and neck stiffness together."
+    }
+  ],
+  "must_not_miss": [
+    "Bacterial meningitis, especially meningococcal disease, with possible evolving septicaemia (vitals, perfusion and full skin exam undocumented: U1, U3, U5)",
+    "Meningococcal septicaemia with occult shock behind a 'looks okay' appearance (F9, U1, U3)",
+    "HSV encephalitis (mental state, seizures and focal neurology not assessed: U2, U7; aciclovir status unknown: U18)",
+    "Subarachnoid haemorrhage (headache onset not documented: U8)",
+    "Raised intracranial pressure or a mass lesion such as an abscess, which would make LP unsafe (U7, U14)"
+  ],
+  "next_step": "Confirm that the ceftriaxone has actually been given now (F10, U20): take blood cultures and meningococcal/pneumococcal PCR only if this causes no delay, document full vitals, GCS, perfusion and a full skin exam (U1-U5), and don't hold antibiotics for the LP (F11) or for CT."
+}

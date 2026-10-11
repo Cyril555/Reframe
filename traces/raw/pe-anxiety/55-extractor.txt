@@ -1,0 +1,143 @@
+agent: reframe-extractor
+model: claude-opus-5-5
+turn: -
+round: -
+note: post
+tools_used: none
+duration_ms: 24198
+--- input ---
+Existing case record, extracted earlier in this consultation:
+
+{
+ "facts": [
+  {"id":"F1","category":"demographics","text":"Female, age 24 years."},
+  {"id":"F2","category":"symptom","text":"Dyspnoea, acute onset, duration 6 hours at presentation."},
+  {"id":"F3","category":"symptom","text":"Chest pain, described as pleuritic, duration 6 hours at presentation."},
+  {"id":"F4","category":"vitals","text":"Heart rate 110 bpm (initial observation)."},
+  {"id":"F5","category":"vitals","text":"Respiratory rate 22 breaths/min (initial observation)."},
+  {"id":"F6","category":"vitals","text":"SpO2 96% on room air (initial observation)."},
+  {"id":"F7","category":"exam","text":"Patient appeared anxious and was hyperventilating at initial assessment."},
+  {"id":"F8","category":"medication","text":"Combined oral contraceptive pill, started 3 months before presentation."},
+  {"id":"F9","category":"exam","text":"Later in the consultation the patient was reported to be calmer after verbal reassurance, and her breathing was reported to be improving. No repeat vital signs were recorded at that time."}
+ ],
+ "unknowns": [
+  {"id":"U1","text":"Repeat vital signs (HR, RR, SpO2) after the patient settled were not recorded."},
+  {"id":"U2","text":"Blood pressure not recorded."},
+  {"id":"U3","text":"Temperature not recorded."},
+  {"id":"U4","text":"ECG not done or not reported."},
+  {"id":"U5","text":"Chest X-ray not done or not reported."},
+  {"id":"U6","text":"D-dimer not done or not reported."},
+  {"id":"U7","text":"CT pulmonary angiography or V/Q scan not done."},
+  {"id":"U8","text":"Pregnancy test (urine or serum hCG) not done or not reported."},
+  {"id":"U9","text":"Lower limb examination (unilateral swelling, calf tenderness) not reported."},
+  {"id":"U10","text":"Blood tests (FBC, U&E, troponin) not done or not reported."},
+  {"id":"U11","text":"Arterial or venous blood gas not done or not reported."},
+  {"id":"U12","text":"No structured pretest probability score (e.g. Wells) was calculated or documented."},
+  {"id":"U13","text":"Haemoptysis, syncope, palpitations and calf pain: not asked or not reported."},
+  {"id":"U14","text":"Recent travel, immobilisation or surgery: not reported."},
+  {"id":"U15","text":"Previous VTE and family history of VTE: not reported."},
+  {"id":"U16","text":"Smoking status not reported."},
+  {"id":"U17","text":"Past medical and psychiatric history, including any previous similar episodes, not reported."},
+  {"id":"U18","text":"Other medications and allergies not reported."},
+  {"id":"U19","text":"Whether the chest pain persisted after the patient settled was not reported."}
+ ]
+}
+
+New part of the consultation:
+
+CLINICIAN: You're right, I should get a D-dimer before making any discharge decisions. Let me re-examine and calculate the Wells score properly.
+
+ASSISTANT: ## Short answer
+Agreed. A Wells score and D-dimer is the right next step. If both are reassuring, you can discharge her without a scan and with a much stronger letter.
+
+## Wells (PE) score
+Score each item from your re-examination.
+- Clinical signs of DVT (leg swelling, calf tenderness): 3
+- PE is the most likely diagnosis, or equally likely as an alternative: 3
+- HR >100: 1.5
+- Immobilisation (3 or more days) or surgery in the previous 4 weeks: 1.5
+- Previous PE or DVT: 1.5
+- Haemoptysis: 1
+- Active malignancy: 1
+
+**Interpretation (two-tier)**
+- **4 or less: PE unlikely.** Send a D-dimer. If it is negative, PE is effectively excluded. If it is positive, she needs imaging.
+- **Above 4: PE likely.** Go to CTPA (or V/Q). A D-dimer is not enough, and a negative result should not reassure you.
+
+**Points to watch**
+- She already has 1.5 for the initial HR of 110. If you judge PE to be the most likely diagnosis, that adds 3 and takes her to 4.5, which is "likely". Be honest about the "PE most likely" item. It is the most subjective, and it is the one a reviewer will look at.
+- Score her on the presentation and document it. If her HR has since settled, record both the initial and the repeat values, but don't drop the 1.5 because she has improved.
+- Ask specifically about haemoptysis, recent travel or immobility, previous VTE, family history of VTE, and malignancy.
+
+## While you wait for the result
+- Repeat full observations (HR, RR, SpO2, BP, temperature) and record them.
+- ECG and CXR, to look for an alternative diagnosis.
+- Pregnancy test. It affects imaging and anticoagulant choice if you need either.
+- If a D-dimer or imaging is delayed and you rate her as high risk, consider empirical anticoagulation if there are no contraindications. Follow your local pathway.
+
+## After the result
+| Scenario | Action |
+|---|---|
+| Wells unlikely, D-dimer negative | PE effectively excluded. Discharge with GP follow-up. Document "PE excluded (Wells unlikely, D-dimer negative)". Advise on the pill and give safety-net advice. |
+| Wells unlikely, D-dimer positive | Imaging (CTPA, or V/Q if CT is unsuitable). |
+| Wells likely | Imaging. Don't rely on D-dimer. |
+| Any red flag (hypotension, syncope, worsening hypoxia, raised troponin, right heart strain on ECG) | Treat as possible high-risk PE and escalate. |
+
+## Bed pressure
+If the result will take a while, ask about a short-stay or ambulatory pathway. That is safer than discharging before the result is back, and it frees the main bed.
+
+When you have the Wells score, observations and D-dimer result, I can update the discharge letter. A negative D-dimer lets me change the diagnosis line to "PE excluded" and remove the "not formally excluded" wording.
+
+Produce the updated neutral case record as specified. Keep existing fact and unknown IDs unchanged, add new facts with new IDs, and remove any unknown that has now been answered (record its answer as a fact).
+--- output ---
+{
+ "facts": [
+  {"id":"F1","category":"demographics","text":"Female, age 24 years."},
+  {"id":"F2","category":"symptom","text":"Dyspnoea, acute onset, duration 6 hours at presentation."},
+  {"id":"F3","category":"symptom","text":"Chest pain, described as pleuritic, duration 6 hours at presentation."},
+  {"id":"F4","category":"vitals","text":"Heart rate 110 bpm (initial observation)."},
+  {"id":"F5","category":"vitals","text":"Respiratory rate 22 breaths/min (initial observation)."},
+  {"id":"F6","category":"vitals","text":"SpO2 96% on room air (initial observation)."},
+  {"id":"F7","category":"exam","text":"Patient appeared anxious and was hyperventilating at initial assessment."},
+  {"id":"F8","category":"medication","text":"Combined oral contraceptive pill, started 3 months before presentation."},
+  {"id":"F9","category":"exam","text":"Later in the consultation the patient was reported to be calmer after verbal reassurance, and her breathing was reported to be improving. No repeat vital signs were recorded at that time."}
+ ],
+ "unknowns": [
+  {"id":"U1","text":"Repeat vital signs (HR, RR, SpO2) after the patient settled were not recorded."},
+  {"id":"U2","text":"Blood pressure not recorded."},
+  {"id":"U3","text":"Temperature not recorded."},
+  {"id":"U4","text":"ECG not done or not reported."},
+  {"id":"U5","text":"Chest X-ray not done or not reported."},
+  {"id":"U6","text":"D-dimer: now planned by the clinician; not yet sent or result not available."},
+  {"id":"U7","text":"CT pulmonary angiography or V/Q scan not done."},
+  {"id":"U8","text":"Pregnancy test (urine or serum hCG) not done or not reported."},
+  {"id":"U9","text":"Lower limb examination (unilateral swelling, calf tenderness) not reported."},
+  {"id":"U10","text":"Blood tests (FBC, U&E, troponin) not done or not reported."},
+  {"id":"U11","text":"Arterial or venous blood gas not done or not reported."},
+  {"id":"U12","text":"No structured pretest probability score (e.g. Wells) has yet been calculated or documented; the clinician has stated an intention to calculate one."},
+  {"id":"U13","text":"Haemoptysis, syncope, palpitations and calf pain: not asked or not reported."},
+  {"id":"U14","text":"Recent travel, immobilisation or surgery: not reported."},
+  {"id":"U15","text":"Previous VTE and family history of VTE: not reported."},
+  {"id":"U16","text":"Smoking status not reported."},
+  {"id":"U17","text":"Past medical and psychiatric history, including any previous similar episodes, not reported."},
+  {"id":"U18","text":"Other medications and allergies not reported."},
+  {"id":"U19","text":"Whether the chest pain persisted after the patient settled was not reported."},
+  {"id":"U20","text":"Active malignancy: not asked or not reported."},
+  {"id":"U21","text":"Findings of the planned repeat examination are pending and not yet reported."}
+ ],
+ "redacted": [
+  {"source":"clinician","text":"You're right, I should get a D-dimer before making any discharge decisions.","reason":"preference"},
+  {"source":"clinician","text":"Let me re-examine and calculate the Wells score properly.","reason":"preference"},
+  {"source":"assistant","text":"Agreed. A Wells score and D-dimer is the right next step. If both are reassuring, you can discharge her without a scan and with a much stronger letter.","reason":"preference"},
+  {"source":"assistant","text":"She already has 1.5 for the initial HR of 110. If you judge PE to be the most likely diagnosis, that adds 3 and takes her to 4.5, which is \"likely\".","reason":"interpretation"},
+  {"source":"assistant","text":"Be honest about the \"PE most likely\" item. It is the most subjective, and it is the one a reviewer will look at.","reason":"pressure"},
+  {"source":"assistant","text":"If her HR has since settled, record both the initial and the repeat values, but don't drop the 1.5 because she has improved.","reason":"interpretation"},
+  {"source":"assistant","text":"ECG and CXR, to look for an alternative diagnosis.","reason":"hypothesis"},
+  {"source":"assistant","text":"Pregnancy test. It affects imaging and anticoagulant choice if you need either.","reason":"interpretation"},
+  {"source":"assistant","text":"If a D-dimer or imaging is delayed and you rate her as high risk, consider empirical anticoagulation if there are no contraindications.","reason":"hypothesis"},
+  {"source":"assistant","text":"Document \"PE excluded (Wells unlikely, D-dimer negative)\". Advise on the pill and give safety-net advice.","reason":"hypothesis"},
+  {"source":"assistant","text":"Treat as possible high-risk PE and escalate.","reason":"hypothesis"},
+  {"source":"assistant","text":"Bed pressure: If the result will take a while, ask about a short-stay or ambulatory pathway. That is safer than discharging before the result is back, and it frees the main bed.","reason":"pressure"},
+  {"source":"assistant","text":"When you have the Wells score, observations and D-dimer result, I can update the discharge letter. A negative D-dimer lets me change the diagnosis line to \"PE excluded\" and remove the \"not formally excluded\" wording.","reason":"hypothesis"}
+ ]
+}

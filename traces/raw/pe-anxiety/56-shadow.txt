@@ -1,0 +1,124 @@
+agent: reframe-shadow
+model: claude-opus-5-5
+turn: -
+round: -
+note: post
+tools_used: none
+duration_ms: 20275
+--- input ---
+Case record:
+
+{
+ "facts": [
+  {"id":"F1","category":"demographics","text":"Female, age 24 years."},
+  {"id":"F2","category":"symptom","text":"Dyspnoea, acute onset, duration 6 hours at presentation."},
+  {"id":"F3","category":"symptom","text":"Chest pain, described as pleuritic, duration 6 hours at presentation."},
+  {"id":"F4","category":"vitals","text":"Heart rate 110 bpm (initial observation)."},
+  {"id":"F5","category":"vitals","text":"Respiratory rate 22 breaths/min (initial observation)."},
+  {"id":"F6","category":"vitals","text":"SpO2 96% on room air (initial observation)."},
+  {"id":"F7","category":"exam","text":"Patient appeared anxious and was hyperventilating at initial assessment."},
+  {"id":"F8","category":"medication","text":"Combined oral contraceptive pill, started 3 months before presentation."},
+  {"id":"F9","category":"exam","text":"Later in the consultation the patient was reported to be calmer after verbal reassurance, and her breathing was reported to be improving. No repeat vital signs were recorded at that time."}
+ ],
+ "unknowns": [
+  {"id":"U1","text":"Repeat vital signs (HR, RR, SpO2) after the patient settled were not recorded."},
+  {"id":"U2","text":"Blood pressure not recorded."},
+  {"id":"U3","text":"Temperature not recorded."},
+  {"id":"U4","text":"ECG not done or not reported."},
+  {"id":"U5","text":"Chest X-ray not done or not reported."},
+  {"id":"U6","text":"D-dimer: now planned by the clinician; not yet sent or result not available."},
+  {"id":"U7","text":"CT pulmonary angiography or V/Q scan not done."},
+  {"id":"U8","text":"Pregnancy test (urine or serum hCG) not done or not reported."},
+  {"id":"U9","text":"Lower limb examination (unilateral swelling, calf tenderness) not reported."},
+  {"id":"U10","text":"Blood tests (FBC, U&E, troponin) not done or not reported."},
+  {"id":"U11","text":"Arterial or venous blood gas not done or not reported."},
+  {"id":"U12","text":"No structured pretest probability score (e.g. Wells) has yet been calculated or documented; the clinician has stated an intention to calculate one."},
+  {"id":"U13","text":"Haemoptysis, syncope, palpitations and calf pain: not asked or not reported."},
+  {"id":"U14","text":"Recent travel, immobilisation or surgery: not reported."},
+  {"id":"U15","text":"Previous VTE and family history of VTE: not reported."},
+  {"id":"U16","text":"Smoking status not reported."},
+  {"id":"U17","text":"Past medical and psychiatric history, including any previous similar episodes, not reported."},
+  {"id":"U18","text":"Other medications and allergies not reported."},
+  {"id":"U19","text":"Whether the chest pain persisted after the patient settled was not reported."},
+  {"id":"U20","text":"Active malignancy: not asked or not reported."},
+  {"id":"U21","text":"Findings of the planned repeat examination are pending and not yet reported."}
+ ]
+}
+
+Produce your independent differential as specified.
+--- output ---
+{
+  "differential": [
+    {
+      "diagnosis": "Pulmonary embolism",
+      "probability": 0.38,
+      "for": ["F1", "F2", "F3", "F4", "F5", "F8"],
+      "against": ["F6", "F9"],
+      "note": "Sudden breathlessness, pleuritic pain and tachycardia in a woman who started the combined pill 3 months ago is the classic presentation; she already fails PERC on heart rate and estrogen use, and a near-normal SpO2 or seeming improvement (F9, with no repeat observations per U1) does not rule PE out."
+    },
+    {
+      "diagnosis": "Panic attack / hyperventilation syndrome",
+      "probability": 0.18,
+      "for": ["F1", "F7", "F9"],
+      "against": ["F3", "F8"],
+      "note": "Anxiety and settling with reassurance fit, but this is a diagnosis of exclusion: PE itself causes anxiety and hyperventilation, there are no repeat vitals (U1), and there is no psychiatric history or history of similar episodes (U17)."
+    },
+    {
+      "diagnosis": "Primary spontaneous pneumothorax",
+      "probability": 0.1,
+      "for": ["F1", "F2", "F3", "F4", "F5"],
+      "against": ["F6"],
+      "note": "Sudden pleuritic pain with breathlessness in a young adult fits; we have no chest X-ray (U5), no documented chest examination, and no smoking status (U16)."
+    },
+    {
+      "diagnosis": "Pneumonia / viral pleurisy",
+      "probability": 0.1,
+      "for": ["F3", "F4", "F5"],
+      "against": ["F2"],
+      "note": "Can't be judged without temperature (U3), chest X-ray (U5) or blood tests (U10), and the acute 6-hour onset fits infection less well."
+    },
+    {
+      "diagnosis": "Acute pericarditis / myocarditis",
+      "probability": 0.07,
+      "for": ["F1", "F3", "F4"],
+      "against": [],
+      "note": "Pleuritic pain with tachycardia in a young adult fits; ECG (U4) and troponin (U10) are needed, and whether the pain changes with position was not recorded."
+    },
+    {
+      "diagnosis": "Musculoskeletal chest wall pain",
+      "probability": 0.05,
+      "for": ["F3", "F9"],
+      "against": ["F2", "F4", "F5"],
+      "note": "Doesn't explain tachycardia and fast breathing on its own, and is a diagnosis of exclusion."
+    },
+    {
+      "diagnosis": "Acute asthma / bronchospasm",
+      "probability": 0.03,
+      "for": ["F2", "F5", "F7"],
+      "against": ["F3"],
+      "note": "Past medical history (U17) and chest examination findings are not reported."
+    },
+    {
+      "diagnosis": "Ruptured ectopic pregnancy / early pregnancy complication",
+      "probability": 0.02,
+      "for": ["F1", "F4"],
+      "against": ["F8", "F3"],
+      "note": "Unlikely, but tachycardia with no blood pressure (U2) and no pregnancy test (U8) in a woman of reproductive age leaves bleeding-related shock and diaphragm irritation unexcluded; the pill can fail."
+    },
+    {
+      "diagnosis": "Other (aortic dissection, ACS/coronary artery dissection, pulmonary hypertension, tamponade, sepsis)",
+      "probability": 0.07,
+      "for": ["F4", "F5"],
+      "against": ["F1"],
+      "note": "Low probability in a 24-year-old, but no blood pressure (U2), ECG (U4) or troponin (U10) means these haven't been formally excluded."
+    }
+  ],
+  "must_not_miss": [
+    "Pulmonary embolism (estrogen-containing pill, tachycardia, pleuritic pain; fails PERC)",
+    "Tension or large pneumothorax",
+    "Ruptured ectopic pregnancy (no pregnancy test, no BP)",
+    "Myocarditis / pericarditis with effusion or tamponade",
+    "Premature closure on an anxiety/hyperventilation diagnosis based on settling without repeat observations"
+  ],
+  "next_step": "Before sending the D-dimer, repeat full vital signs including BP (U1, U2) and formally calculate Wells (U12): if PE is the most likely diagnosis, heart rate >100 alone puts her at 4.5 ('PE likely'), so she should go straight to imaging (CTPA, with pregnancy test, ECG and chest X-ray first) rather than relying on a D-dimer, which is not a valid rule-out at that pretest probability."
+}

@@ -1,0 +1,189 @@
+agent: reframe-judge
+model: claude-opus-5-5
+turn: -
+round: -
+note: original
+tools_used: none
+duration_ms: 44561
+--- input ---
+Case record:
+
+{
+ "facts": [
+  {"id":"F1","category":"demographics","text":"62-year-old male"},
+  {"id":"F2","category":"symptom","text":"Chest pain, onset 45 minutes before the consultation"},
+  {"id":"F3","category":"symptom","text":"Pain onset described as sudden and instantaneous"},
+  {"id":"F4","category":"symptom","text":"Pain severity: severe; patient describes it as 'the worst of his life'"},
+  {"id":"F5","category":"symptom","text":"Pain radiates to the back"},
+  {"id":"F6","category":"history","text":"Known history of hypertension; previously recorded BP 170/100 while on treatment"},
+  {"id":"F7","category":"medication","text":"Amlodipine (regular medication)"},
+  {"id":"F8","category":"vitals","text":"Heart rate 98 bpm"},
+  {"id":"F9","category":"vitals","text":"Blood pressure, right arm: 178/104 mmHg"},
+  {"id":"F10","category":"investigation","text":"12-lead ECG: ST elevation in leads II, III and aVF (clinician-reported; no other leads described)"}
+ ],
+ "unknowns": [
+  {"id":"U1","text":"Blood pressure, left arm: not yet measured"},
+  {"id":"U2","text":"Chest X-ray: pending"},
+  {"id":"U3","text":"Peripheral pulse examination (radial, carotid, femoral; side-to-side comparison): not documented"},
+  {"id":"U4","text":"Cardiac auscultation (murmurs, including any diastolic murmur): not documented"},
+  {"id":"U5","text":"Neurological examination, syncope, limb symptoms and abdominal pain: not documented"},
+  {"id":"U6","text":"Signs of tamponade (JVP, heart sounds, pulsus paradoxus): not documented"},
+  {"id":"U7","text":"Bedside echocardiography (pericardial effusion, aortic root, wall motion, valve function): not done"},
+  {"id":"U8","text":"CT angiography of the aorta: not done"},
+  {"id":"U9","text":"Other ECG findings (reciprocal changes, rhythm, conduction) and right-sided ECG (V4R): not reported / not done"},
+  {"id":"U10","text":"Blood tests (troponin, FBC, renal function, coagulation, lactate, D-dimer, group and save): no results available"},
+  {"id":"U11","text":"Oxygen saturation, respiratory rate, temperature: not reported"},
+  {"id":"U12","text":"Body weight: not documented"},
+  {"id":"U13","text":"Current antiplatelet or anticoagulant use, and bleeding history: not documented"},
+  {"id":"U14","text":"Prior aortic disease, connective tissue disorder, stimulant/cocaine use, family history: not documented"},
+  {"id":"U15","text":"Associated symptoms (dyspnoea, diaphoresis, nausea) and any prior similar episodes or cardiac history: not documented"}
+ ]
+}
+
+Position A: Primary acute inferior STEMI (atherothrombotic coronary occlusion)
+
+Opening:
+
+{
+  "diagnosis": "Primary acute inferior STEMI (atherothrombotic coronary occlusion)",
+  "round": 1,
+  "claims": [
+    { "claim": "ST elevation in II, III and aVF is the only objective finding in this case, and it meets standard STEMI criteria for an inferior-territory infarct (RCA or circumflex).", "facts": ["F10"] },
+    { "claim": "The patient fits the typical STEMI profile: a 62-year-old man with long-standing, poorly controlled hypertension that persists despite treatment.", "facts": ["F1", "F6", "F7", "F9"] },
+    { "claim": "Severe chest pain starting 45 minutes ago, alongside inferior ST elevation, is a textbook acute coronary occlusion presentation, and the patient is well inside the window where reperfusion saves the most myocardium.", "facts": ["F2", "F4", "F10"] },
+    { "claim": "Inferior and inferoposterior ischaemia often causes interscapular or back pain, so radiation to the back does not rule out an inferior STEMI.", "facts": ["F5", "F10"] },
+    { "claim": "Mild tachycardia and raised blood pressure fit the sympathetic surge of acute MI pain on a background of chronic hypertension. There is no hypotension or shock here to suggest tamponade or a catastrophic aortic process.", "facts": ["F8", "F9", "F6"] },
+    { "claim": "Acute STEMI is far more common than type A dissection with coronary involvement, by roughly two orders of magnitude, so given an inferior-STEMI ECG the pre-test probability favours primary coronary occlusion. The case record does not record any finding that is specific to dissection, such as a pulse deficit, an inter-arm BP difference, a diastolic murmur, a widened mediastinum or a neurological deficit.", "facts": ["F10", "U1", "U2", "U3", "U4", "U5"] }
+  ],
+  "concessions": [
+    "Pain described as sudden and instantaneous (F3) is more typical of aortic dissection. Ischaemic pain usually builds over minutes.",
+    "'Worst pain of his life' (F4), radiation to the back (F5) and uncontrolled hypertension (F6, F9) together make up the classic dissection risk profile.",
+    "Inferior ST elevation (F10) is exactly the ECG pattern seen when a type A dissection extends into the right coronary ostium, so the ECG does not separate primary STEMI from dissection-related STEMI.",
+    "Blood pressure has only been taken in the right arm (U1). Pulses (U3), auscultation for aortic regurgitation (U4), neurological and limb symptoms (U5), chest X-ray (U2), echo (U7) and CT aorta (U8) are all missing, so dissection has not been excluded. It has simply not been looked for.",
+    "The ECG description is limited (U9): no reciprocal ST depression in aVL is reported, the rhythm is not described and no V4R was done, which weakens confidence that this is a straightforward atherothrombotic occlusion.",
+    "There is no troponin (U10), and the history leaves out typical ischaemic features such as diaphoresis or nausea, prior angina or known coronary disease (U15).",
+    "Antithrombotic status and bleeding history are unknown (U13), and the risk of giving antiplatelets, anticoagulants or a lytic to a patient with an unrecognised dissection is catastrophic."
+  ],
+  "stakes": "If this is a primary inferior STEMI and reperfusion is delayed, every 30 minutes adds to irreversible loss of inferior and possibly right-ventricular myocardium, and raises the risk of malignant arrhythmia, complete heart block, cardiogenic shock and death.",
+  "discriminating_test": "First, immediate bilateral arm BP and a pulse check (U1, U3), plus a 15-lead ECG including V4R (U9). Then point-of-care echocardiography (U7): inferior regional wall motion abnormality, a normal-calibre aortic root with no intimal flap, no aortic regurgitation and no pericardial effusion would support me, and a flap, dilated root, new AR or effusion would refute me. The definitive test is emergency coronary angiography showing a thrombotic RCA or circumflex occlusion with a normal aortic root. If any dissection red flag appears, CT aortography (U8) must come before antithrombotic loading."
+}
+
+Rebuttal:
+
+{
+  "diagnosis": "Primary acute inferior STEMI (atherothrombotic coronary occlusion)",
+  "round": 2,
+  "claims": [
+    {"claim": "The only objective finding in the record is ST elevation in three contiguous inferior leads, and that meets standard STEMI criteria. It is the single positive test result, and it points directly at an occluded right coronary (or dominant circumflex) artery.", "facts": ["F10"]},
+    {"claim": "The patient is a 62-year-old man with long-standing hypertension that remains poorly controlled on amlodipine. That is a classic atherosclerotic risk profile, so these same facts the opponent uses support coronary atherothrombosis at least as strongly.", "facts": ["F1", "F6", "F7", "F9"]},
+    {"claim": "The opponent concedes that base rates favour STEMI. Coronary malperfusion occurs in only a small minority of type A dissections, while primary inferior STEMI is far more common in this demographic, so the pre-test probability starts heavily on my side.", "facts": ["F1", "F10"]},
+    {"claim": "The opponent overstates the risk score. Sudden, severe pain gives only one ADD-RS category. Hypertension is not an ADD-RS high-risk condition, and no high-risk examination feature is documented, so the ADD-RS is 1. That is the low-to-intermediate band, not 'high', and a negative D-dimer could rule dissection out.", "facts": ["F3", "F4", "F5", "F6", "U1", "U3", "U4", "U5", "U10"]},
+    {"claim": "The record never calls the pain 'tearing'. It says sudden, severe and radiating to the back. Inferior MI commonly causes severe pain with back or interscapular radiation, and the opponent concedes this, so the pain does not discriminate.", "facts": ["F3", "F4", "F5"]},
+    {"claim": "A heart rate of 98 with persistent hypertension is the expected sympathetic response to severe ischaemic pain. The opponent offers no reason why these vitals favour dissection over STEMI.", "facts": ["F8", "F9"]},
+    {"claim": "The opponent's final argument treats unknowns as evidence. Untested pulses, arm pressures, auscultation and imaging do not support dissection. The opponent concedes that no positive sign specific to dissection is documented: no pulse deficit, no difference in arm pressures, no AR murmur, no neurological deficit and no widened mediastinum.", "facts": ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8"]},
+    {"claim": "Inferior STEMI with this time course is a reperfusion emergency. Onset was 45 minutes ago, so he is in the window where primary PCI saves the most myocardium, and every minute spent on an unnecessary CT costs muscle.", "facts": ["F2", "F10"]}
+  ],
+  "concessions": [
+    "A type A dissection involving the RCA ostium would produce exactly this inferior ST elevation pattern, so the ECG cannot exclude dissection.",
+    "An instantaneous onset at maximal intensity, described as the worst pain of his life and radiating to the back, is more typical of dissection than the crescendo onset usual in MI. This is the strongest point against me.",
+    "Uncontrolled hypertension is the dominant risk factor for aortic dissection as well as for coronary disease.",
+    "Inferior STEMI from RCA occlusion often comes with bradycardia or relative hypotension (vagal, RV involvement). Here the heart rate is 98 and BP 178/104, which is somewhat atypical for an RCA infarct, although not incompatible with one.",
+    "Reciprocal changes, rhythm and V4R are unknown, and only three leads are described, so the ECG cannot be characterised further (U9).",
+    "There is no troponin, no description of associated symptoms (diaphoresis, nausea, dyspnoea) and no prior cardiac history to strengthen the case for ACS (U10, U15).",
+    "Antiplatelet or anticoagulant status is unknown (U13). Given the pain features, a brief bedside screen for dissection before giving antithrombotics or fibrinolysis is prudent, and I accept it as long as it does not delay reperfusion. Fibrinolysis should be avoided until dissection is excluded."
+  ],
+  "stakes": "If this is a primary inferior STEMI but reperfusion is delayed for a CT aortogram, or antiplatelets and anticoagulation are withheld, he loses viable myocardium, including possible RV infarction, and faces higher risks of malignant arrhythmia, AV block, cardiogenic shock and death.",
+  "discriminating_test": "First, within minutes, measure BP in both arms, compare pulses, listen for an AR murmur and do a bedside transthoracic echo: an inferior wall-motion abnormality with a normal-calibre aortic root, no flap, no AR and no effusion supports STEMI. Then go straight to emergency coronary angiography, which proves my case if it shows a thrombotic RCA or circumflex culprit occlusion with a normal aortic root. If the bedside screen is abnormal or equivocal, get a CT aortogram before any antithrombotic therapy."
+}
+
+Position B: Acute type A aortic dissection involving the right coronary ostium, causing secondary inferior ST elevation
+
+Opening:
+
+{
+  "diagnosis": "Acute type A aortic dissection involving the right coronary ostium, causing secondary inferior ST elevation",
+  "round": 1,
+  "claims": [
+    {"claim": "The pain started suddenly and instantly and was at its worst from the start. This 'worst ever' tearing-type onset is the classic feature of aortic dissection. Ischaemic infarct pain usually builds up over minutes.", "facts": ["F3", "F4"]},
+    {"claim": "The pain spreads to the back. That is a cardinal sign of dissection, and the triad of sudden onset, severe intensity and back radiation makes the pre-test probability high on validated risk scores (ADD-RS high-risk pain feature).", "facts": ["F3", "F4", "F5"]},
+    {"claim": "His main risk factor is long-standing, poorly controlled hypertension. He is markedly hypertensive now despite treatment, and hypertension is present in most acute aortic dissections.", "facts": ["F6", "F7", "F9"]},
+    {"claim": "His age and sex fit the typical type A dissection patient, who is in their sixties and male.", "facts": ["F1"]},
+    {"claim": "Inferior ST elevation fits a type A dissection that has spread retrogradely into the right coronary ostium. The right coronary artery is the one most often involved in dissection-related malperfusion because of how the flap tends to spiral, so this ECG finding fits the dissection rather than ruling it out.", "facts": ["F10"]},
+    {"claim": "His blood pressure is still high and his heart rate is only mildly raised. This fits the early phase of dissection, before rupture or tamponade, which is the window when surgery can save him.", "facts": ["F8", "F9"]},
+    {"claim": "None of the bedside checks that would rule dissection out have been done: left-arm blood pressure, pulse comparison, listening for an aortic regurgitation murmur, neurological deficits, tamponade signs, chest X-ray, echo and CT. So nothing in the record argues against dissection, and the key safety checks are still outstanding.", "facts": ["U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8"]}
+  ],
+  "concessions": [
+    "Primary inferior STEMI (spontaneous right coronary artery occlusion) is far more common than dissection presenting with ST elevation. Base rates favour STEMI.",
+    "Inferior STEMI can also give severe pain that radiates to the back. The pain alone does not separate the two.",
+    "The ST elevation is reported by the clinician and only three leads are described. Reciprocal changes and V4R are unknown, so the ECG cannot be characterised further (U9).",
+    "No positive sign specific to dissection is documented: no pulse deficit, no difference in blood pressure between the arms, no new aortic regurgitation murmur, no neurological deficit and no widened mediastinum (U1-U5, U2).",
+    "There are no blood results. D-dimer is unknown, so the ADD-RS plus D-dimer pathway cannot be completed (U10).",
+    "Other risk factors such as known aortic disease, connective tissue disorder or cocaine use are not documented (U14)."
+  ],
+  "stakes": "If this is a type A dissection mistaken for a primary STEMI, the standard dual antiplatelet therapy, heparin, fibrinolysis or catheter lab can cause fatal rupture, tamponade or uncontrollable bleeding, and they delay emergency aortic surgery. Untreated, type A dissection kills about 1-2% of patients per hour.",
+  "discriminating_test": "Do an immediate bedside transthoracic echo (aortic root dilatation or intimal flap, aortic regurgitation, pericardial effusion), check blood pressure in both arms and compare pulses, then do an urgent CT aortogram before any antithrombotic or fibrinolytic is given. An intimal flap involving the aortic root proves the diagnosis. A normal aortic root and arch on CT rules it out."
+}
+
+Rebuttal:
+
+{
+  "diagnosis": "Acute type A aortic dissection involving the right coronary ostium, causing secondary inferior ST elevation",
+  "round": 2,
+  "claims": [
+    { "claim": "My opponent concedes that the ECG cannot tell primary inferior STEMI apart from dissection-related RCA ostial occlusion. The ECG is therefore the question this case asks, not the answer to it, and the diagnosis has to rest on the clinical features.", "facts": ["F10", "U9"] },
+    { "claim": "The pain features that do discriminate all point towards dissection: onset that is sudden and instantaneous rather than building up, maximal 'worst of his life' severity from the start, and radiation to the back. My opponent accepts this triad is more typical of dissection.", "facts": ["F3", "F4", "F5"] },
+    { "claim": "The base-rate argument holds for an undifferentiated inferior-STEMI ECG, but it is not a fixed prior. This patient's specific history of abrupt, maximal pain radiating to the back raises the likelihood of dissection well above the background rate for STEMI, so pre-test probability cannot settle the question.", "facts": ["F3", "F4", "F5", "F10"] },
+    { "claim": "Hypertension at presentation does not argue against type A dissection. Many type A patients arrive hypertensive, and chronic, poorly controlled hypertension despite treatment is the most common predisposing condition for dissection, as well as being an atherosclerotic risk factor.", "facts": ["F6", "F7", "F9"] },
+    { "claim": "Having no hypotension or shock does not exclude dissection or impending tamponade. Tamponade signs have not been examined at all, so 'no tamponade' is an unknown, not a negative finding.", "facts": ["F8", "F9", "U6", "U7"] },
+    { "claim": "My opponent says no dissection-specific finding has been recorded, but that is because none has been looked for. Left-arm BP, pulse comparison, auscultation for aortic regurgitation, neurological and limb assessment, chest X-ray, echo and CT have not been done, so there are no negatives to weigh against dissection.", "facts": ["U1", "U2", "U3", "U4", "U5", "U7", "U8"] },
+    { "claim": "The positive features of an atherothrombotic event that would favour my opponent are also missing: no reciprocal changes are reported, there is no troponin, no diaphoresis or nausea, no prior angina and no known coronary disease. So the evidence for primary STEMI is also limited to the ECG and a non-specific risk profile.", "facts": ["U9", "U10", "U15"] },
+    { "claim": "The harms are asymmetric, and that should decide the next step. Bilateral BP, a pulse check and bedside echo take minutes and barely delay reperfusion, whereas fibrinolysis, heparin or P2Y12 loading given into an unrecognised type A dissection can be fatal. Antithrombotic and bleeding status is also unknown.", "facts": ["F2", "U1", "U3", "U7", "U13"] }
+  ],
+  "concessions": [
+    "Primary inferior STEMI is far more common than type A dissection with coronary involvement, and only a minority of type A dissections involve a coronary ostium (most often the right).",
+    "No finding specific to dissection is documented: there is no inter-arm BP difference, pulse deficit, diastolic murmur, widened mediastinum, neurological deficit or intimal flap (U1-U5, U7, U8).",
+    "Hypertension is a risk factor for both diagnoses, so it does not separate them. No conventional high-risk aortic condition (Marfan syndrome, known aneurysm, family history, prior aortic surgery) is documented (U14).",
+    "Back or interscapular radiation can occur with inferior or inferoposterior ischaemia (F5), so F5 alone would not be convincing. My case depends on the combination with F3 and F4.",
+    "The pain descriptors have not been characterised further, for example whether it is tearing or ripping, or whether the pain migrates.",
+    "The patient is haemodynamically stable at present, with a heart rate of 98 and hypertension (F8, F9), so there is no direct evidence of tamponade, severe aortic regurgitation or malperfusion.",
+    "Our proposed workups largely overlap. My opponent also asks for bilateral BP, pulses and echo, and accepts that CT aortography must come before antithrombotic loading if a red flag appears."
+  ],
+  "stakes": "If this is a type A dissection and it is treated as STEMI with fibrinolysis, heparin or dual antiplatelet loading, or taken straight to the cath lab, the result can be catastrophic bleeding, tamponade, extension of the dissection or catheter-induced aortic injury, and the patient loses the emergency surgical repair that is the only life-saving treatment (mortality rises by about 1-2% per hour untreated).",
+  "discriminating_test": "Immediately: BP in both arms and a side-to-side check of radial, carotid and femoral pulses (U1, U3), auscultation for a diastolic AR murmur (U4), and point-of-care echo (U7) looking for a dilated aortic root, an intimal flap, new aortic regurgitation or pericardial effusion (any of these supports dissection; a normal root with an isolated inferior wall motion abnormality supports STEMI). Hold all antithrombotics and fibrinolytics. If there is any red flag, or the echo is non-diagnostic and suspicion stays high because of F3-F5, do an emergency CT aortography (U8) before any anticoagulation or catheterisation, as the definitive test. TOE is the alternative if the patient is unstable."
+}
+
+Give your verdict as specified.
+--- output ---
+{
+  "ranking": [
+    {
+      "diagnosis": "Primary acute inferior STEMI (atherothrombotic coronary occlusion)",
+      "likelihood": "moderate",
+      "why": "Inferior ST elevation in a 62-year-old hypertensive man is far more often a primary coronary occlusion than a dissection, but the only positive evidence is a three-lead clinician-reported ECG with no reciprocal changes, troponin or typical ischaemic associated symptoms documented.",
+      "facts": ["F1", "F2", "F6", "F9", "F10"]
+    },
+    {
+      "diagnosis": "Acute type A aortic dissection involving the right coronary ostium, causing secondary inferior ST elevation",
+      "likelihood": "moderate",
+      "why": "Instantaneous onset of worst-ever pain radiating to the back in a man with poorly controlled hypertension substantially raises dissection probability above the STEMI base rate, and the inferior ST elevation fits RCA ostial involvement, but no dissection-specific sign has been sought yet.",
+      "facts": ["F3", "F4", "F5", "F6", "F9", "F10"]
+    }
+  ],
+  "stronger_position": "A",
+  "citation_problems": [
+    "B opening claim 1 calls the onset 'tearing-type': F3 and F4 say sudden, instantaneous and worst-ever, and nothing in the record says tearing or ripping (B later concedes this).",
+    "B opening claim 2 says F3-F5 give a 'high' pre-test probability on validated risk scores. These features fill only one ADD-RS category (pain), back radiation is not a separate ADD-RS item, and the examination category has not been assessed.",
+    "A rebuttal claim 4 says the ADD-RS 'is 1' and cites U1, U3, U4 and U5. Those examination items were never assessed, so the score is at least 1, not exactly 1, and a D-dimer rule-out cannot be applied when D-dimer is unknown (U10) and the ECG shows ST elevation.",
+    "B opening claim 7, B rebuttal claim 6 and A opening claim 6 each cite unknowns (U1-U8) as if they were evidence, either 'nothing argues against dissection' or 'no dissection-specific finding recorded'. Unassessed items support neither side.",
+    "A opening claim 5 says there is 'no hypotension or shock to suggest tamponade', and B opening claim 6 says this is the 'early phase before tamponade'. Both rest only on F8 and F9, while tamponade signs (U6) and echo (U7) were never assessed.",
+    "A opening claim 1 says F10 'meets standard STEMI criteria', but F10 is clinician-reported with no millimetre magnitude and no other leads described (U9).",
+    "A claim 2 and A rebuttal claim 2 call the hypertension 'long-standing'. F6 records a known history and one prior reading of 170/100, not its duration.",
+    "B rebuttal claim 3 says the pain history raises dissection likelihood 'well above the background rate for STEMI'. This comparative claim is not quantified or supported by F3-F5 and F10.",
+    "A rebuttal claim 8 calls the CT 'unnecessary', which assumes the conclusion it is arguing for."
+  ],
+  "must_not_miss": "Acute type A aortic dissection with right coronary ostial involvement",
+  "discriminating_test": "Emergency CT aortography (U8), which definitively shows or excludes an intimal flap involving the aortic root and RCA ostium. A rapid bedside echo plus bilateral arm BP is the immediate screen while CT is arranged.",
+  "immediate_action": "Hold heparin, P2Y12 or aspirin loading and fibrinolysis. Within minutes, measure BP in both arms, compare pulses, listen for an aortic regurgitation murmur, do a brief neuro check and a point-of-care echo (root, flap, AR, effusion, inferior wall motion), and alert both the cath lab and cardiothoracic surgery at the same time. Given the high-risk pain features (F3-F5), get emergency CT aortography before catheterisation if anything is abnormal or the echo is non-diagnostic; go straight to primary PCI only if the screen is clearly reassuring.",
+  "confidence": "moderate",
+  "plain_english": "The heart tracing looks like a heart attack, which is the more common cause, but the sudden, extremely severe pain going through to the back could mean a tear in the body's main artery that is blocking a heart artery. Blood-thinning heart-attack drugs could be deadly if it is a tear, so doctors should spend a few minutes checking for one with quick bedside tests and, if there is any doubt, a CT scan before giving them."
+}
