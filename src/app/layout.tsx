@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter_Tight, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <span>Research demonstration. Not for clinical use. Every agent message is a recorded, unedited model response.</span>
           </div>
         </footer>
+        <Analytics />
       </body>
     </html>
   );
